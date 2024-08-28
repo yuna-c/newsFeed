@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Orbitron&display=swap');
+@import 'reset.css';
+
+/* 공통적으로 쓸 color, fontFamily, fontSize, rgbaColorCode 설정   */
+:root {
+  --baseFont: 'Nanum Myeongjo', 'arial', '돋움';
+  --pointFont: 'orbitron', 'arial';
+  --baseColor: #111;
+  --baseColor-code: 18, 18, 18;
+  --pointColor: hotpink;
+  --bgColor: #efefef;
+  --bgColor-code: 240, 240, 240;
+  --titSize1: 2.4rem;
+  --titSize2: 1.6rem;
+  --bodySize: 1rem;
+}
+
+body {
+  background-color: skyblue;
+}
