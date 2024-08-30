@@ -59,7 +59,8 @@ export default function Mypage() {
     <Layout title={'myPage'}>
       <Section>
         <h2>Section</h2>
-        username: 강구
+        username: 강구1234 username: 강구1234 username: 강구1234 username: 강구1234 username: 강구1234 username:
+        강구1234
         <Article>
           <h2>회원가입</h2>
           <form onSubmit={onHandleSignUp}>
