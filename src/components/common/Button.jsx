@@ -18,6 +18,6 @@ const Buttons = styled.button`
   }
 `;
 
-export default function Button() {
-  return <Buttons className="Button">Buttons</Buttons>;
+export default function Button({ children }) {
+  return <Buttons className="Button">{children}</Buttons>;
 }
