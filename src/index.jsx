@@ -11,7 +11,9 @@ import './styles/index.css';
 
 // yarn add styled-components
 // yarn add react-router-dom
+// yarn add uuid
 
+// 사용 유무 몰루?
 // yarn add redux react-redux
 // yarn add react-redux @reduxjs/toolkit
 

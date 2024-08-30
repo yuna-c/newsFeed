@@ -1,8 +1,10 @@
+import Router from './shared/Router';
+
+import { AuthProvider } from './context/AuthContext';
 import { useSelector, useDispatch } from 'react-redux';
 import { setData } from './redux/slices/functionSlice';
-import supabase from './supabase/supabase';
 
-import Router from './shared/Router';
+import { Wrap } from './styles/layout';
 
 function App() {
   // reduxToolkit 예시
@@ -10,13 +12,16 @@ function App() {
   const data = useSelector((state) => state.function.data);
   console.log(`dispatch=>`, dispatch(setData(data)));
 
-  // supabase 예시
-  console.log(`supabase=>`, supabase);
+  // // supabase 예시
+  // console.log(`supabase=>`, supabase);
 
   return (
     <>
-      <h1>supabase</h1>
-      <Router />
+      <Wrap id="Wrap">
+        <AuthProvider>
+          <Router />
+        </AuthProvider>
+      </Wrap>
     </>
   );
 }
