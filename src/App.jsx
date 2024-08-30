@@ -24,9 +24,8 @@ function App() {
           username: 강구1234 username: 강구1234 username: 강구1234 username: 강구1234 username: 강구1234 username:
           강구1234
         </p>
-        <Header />
+
         <Router />
-        <Footer />
       </Wrap>
     </>
   );
