@@ -1,8 +1,12 @@
+import supabase from './api/supabase';
+import Router from './shared/Router';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { setData } from './redux/slices/functionSlice';
-import supabase from './supabase/supabase';
 
-import Router from './shared/Router';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+import { Wrap } from './styles/layout';
 
 function App() {
   // reduxToolkit 예시
