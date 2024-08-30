@@ -19,8 +19,15 @@ function App() {
 
   return (
     <>
-      <h1>test branch 입니다!</h1>
-      <Router />
+      <Wrap id="Wrap">
+        <p>
+          username: 강구1234 username: 강구1234 username: 강구1234 username: 강구1234 username: 강구1234 username:
+          강구1234
+        </p>
+        <Header />
+        <Router />
+        <Footer />
+      </Wrap>
     </>
   );
 }
