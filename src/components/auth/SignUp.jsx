@@ -65,7 +65,7 @@ const SignUp = () => {
             <br />
             <br />
             <label htmlFor="inputPassword" style={{ width: '80px', display: 'inline-block' }}>
-              회원가입
+              비밀번호
             </label>
             <Input
               ref={passwordRef}
