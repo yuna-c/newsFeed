@@ -15,8 +15,8 @@ export default function Router() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/" element={<SignIn />} />
-          <Route path="/" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/detail" element={<Detail />} />
           <Route path="/write" element={<Write />} />
