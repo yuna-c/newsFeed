@@ -7,7 +7,7 @@ const MainPage = () => {
   return(
     <MainPageContainer>
       Mainpage
-    <PostList />
+      <PostList />
     </MainPageContainer>
   ) 
 }

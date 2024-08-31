@@ -6,7 +6,7 @@ const PostList = () => {
   return(
   <PostListContainer>
     PostList
-  <PostCard/>
+    <PostCard/>
   </PostListContainer>
   );
 };
