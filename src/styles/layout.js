@@ -33,14 +33,3 @@ export const HeaderDiv = styled.header`
 export const FooterDiv = styled.footer`
   background-color: #ddd;
 `;
-
-// main
-export const MainPageContainer = styled.div`
-  background-color: blue;
-`;
-export const PostListContainer = styled.div`
-  background-color: yellow;
-`;
-export const PostCardContainer = styled.div`
-  background-color: red;
-`;

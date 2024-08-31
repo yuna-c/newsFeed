@@ -1,14 +1,12 @@
-import { MainPageContainer } from '../../styles/layout';
+import { MainPageContainer } from '../../styles/layout-main';
 import PostList from './PostList';
 
-
 const MainPage = () => {
-
-  return(
+  return (
     <MainPageContainer>
       Mainpage
       <PostList />
     </MainPageContainer>
-  ) 
-}
+  );
+};
 export default MainPage;
