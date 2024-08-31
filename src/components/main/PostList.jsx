@@ -1,9 +1,14 @@
-import React from 'react'
+import { PostListContainer } from '../../styles/layout';
+import PostCard from './PostCard';
 
 const PostList = () => {
-  return (
-    <div>PostList</div>
-  )
-}
 
-export default PostList
+  return(
+  <PostListContainer>
+    PostList
+  <PostCard/>
+  </PostListContainer>
+  );
+};
+
+export default PostList;

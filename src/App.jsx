@@ -4,8 +4,6 @@ import Router from './shared/Router';
 import { useSelector, useDispatch } from 'react-redux';
 import { setData } from './redux/slices/functionSlice';
 
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
 import { Wrap } from './styles/layout';
 
 function App() {
@@ -20,11 +18,6 @@ function App() {
   return (
     <>
       <Wrap id="Wrap">
-        <p>
-          username: 강구1234 username: 강구1234 username: 강구1234 username: 강구1234 username: 강구1234 username:
-          강구1234
-        </p>
-
         <Router />
       </Wrap>
     </>
