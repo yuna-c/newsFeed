@@ -2,7 +2,7 @@ import Router from './shared/Router';
 
 import { AuthProvider } from './context/AuthContext';
 // import { useSelector, useDispatch } from 'react-redux';
-import { setData } from './redux/slices/functionSlice';
+// import { setData } from './redux/slices/functionSlice';
 
 import { Wrap } from './styles/layout';
 
