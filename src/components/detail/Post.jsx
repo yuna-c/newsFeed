@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://wqwibyktkcnkeleewbme.supabase.co';
@@ -52,6 +52,6 @@ const Post = () => {
       )}
     </div>
   );
-}
+};
 
 export default Post;

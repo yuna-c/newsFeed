@@ -5,6 +5,7 @@ import { LogoDiv, NavDiv } from '../../styles/layout';
 const Nav = () => {
   const { user, signOut } = useAuth();
   let navigate = useNavigate();
+  // console.log(user);
 
   const handleSignout = async () => {
     await signOut();
@@ -29,10 +30,14 @@ const Nav = () => {
               <Link to="/drop">회원탈퇴</Link>
             </li>
             <li>
-              <Link to="/write">글쓰기</Link>
+              {/* <Link to="/write">글쓰기</Link> */}
+              <Link to="/addpost">글쓰기</Link>
             </li>
             <li>
               <Link to="/post">작성 글</Link>
+            </li>
+            <li>
+              <Link to="/detail">detail</Link>
             </li>
             <li>
               <Link to="/" onClick={handleSignout}>

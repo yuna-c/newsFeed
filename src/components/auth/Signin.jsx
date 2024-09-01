@@ -47,7 +47,7 @@ const SignIn = () => {
     }
 
     navigate('/');
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (
@@ -57,18 +57,19 @@ const SignIn = () => {
           <form onSubmit={handleSubmit}>
             <h1>로그인 하기</h1>
             <InputField>
-              <label htmlFor="inputEmail">이메일</label>
+              <label htmlFor="inputEmail" style={{ width: '100px', display: 'inline-block' }}>
+                이메일
+              </label>
               <Input ref={emailRef} type="email" id="inputEmail" placeholder="Email address" required />
             </InputField>
-            <br />
-            <br />
+
             <InputField>
-              <label htmlFor="inputPassword">비밀번호</label>
+              <label htmlFor="inputPassword" style={{ width: '100px', display: 'inline-block' }}>
+                비밀번호
+              </label>
               <Input ref={passwordRef} type="password" id="inputPassword" placeholder="Password" required />
             </InputField>
 
-            <br />
-            <br />
             <button type="submit">로그인</button>
             <Link to="/signup">회원가입</Link>
           </form>

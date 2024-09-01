@@ -1,4 +1,4 @@
-import supabase from '../../api/supabase';
+import { supabase } from '../../api/supabase';
 
 import { useState } from 'react';
 import { Section, Article } from '../../styles/layout';
