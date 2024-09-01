@@ -1,5 +1,5 @@
 import React from 'react';
-import supabase from '../../api/supabase';
+import { supabase } from '../../api/supabase';
 
 const DropUser = () => {
   const [loading, setLoading] = React.useState(false);
