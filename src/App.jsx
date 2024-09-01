@@ -5,13 +5,9 @@ import Router from './shared/Router';
 function App() {
   return (
     <UseProvider>
-      (
-      <>
         <Wrap id="Wrap">
           <Router />
         </Wrap>
-      </>
-      );
     </UseProvider>
   );
 }
