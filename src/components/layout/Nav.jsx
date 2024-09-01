@@ -10,6 +10,7 @@ const Nav = () => {
   const handleSignout = async () => {
     await signOut();
     navigate('/');
+    window.location.reload();
   };
 
   return (
