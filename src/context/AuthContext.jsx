@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
       } = await supabase.auth.getSession();
 
       if (error) {
-        console.error('Error getting session:', error);
+        console.error('세션 가져오기 오류:', error);
       } else {
         // console.log('Session:', session)
         setUser(session?.user ?? null);
@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
     getUserSession();
 
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-      // console.log('Auth state changed:', event, session)
+      // console.log('인증상태 변경됨:', event, session)
       setUser(session?.user ?? null);
       setLoading(false);
     });
@@ -46,11 +46,9 @@ export function AuthProvider({ children }) {
       const { user, error } = await supabase.auth.signUp(data);
 
       if (error) {
-        console.error('Signup error:', error);
+        console.error('회원가입 오류:', error);
         return { error };
       }
-
-      alert('회원가입 되었습니다. 로그인 페이지로 이동합니다.');
 
       return { user };
     },
@@ -58,22 +56,55 @@ export function AuthProvider({ children }) {
       const { error } = await supabase.auth.signInWithPassword(data);
 
       if (error) {
-        console.error('Signin error:', error);
+        console.error('로그인 오류:', error);
         return { error };
       }
 
-      alert('로그인 되었습니다.');
+      alert('로그인 완료');
     },
     signOut: async () => {
       const { error } = await supabase.auth.signOut();
 
       if (error) {
-        console.error('Signout error:', error);
-        return { error };
+        console.error('로그아웃 오류:', error);
+      } else {
+        alert('로그아웃 완료');
+        setUser(null); // 로그아웃 후 사용자 상태를 null로 재설정
+      }
+    },
+    // 구현 미완료
+    deleteUser: async () => {
+      if (!user) {
+        console.error('삭제할 사용자가 없습니다.');
+        return;
       }
 
-      alert('로그아웃 되었습니다.');
-      setUser(null);
+      try {
+        // 백엔드로 삭제 요청 보내기
+        const response = await fetch('/api/deleteUser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userId: user.id })
+        });
+
+        if (!response.ok) {
+          throw new Error('회원탈퇴 요청이 실패했습니다.');
+        }
+
+        alert('회원탈퇴 완료');
+        setUser(null); // 계정 삭제 후 사용자 상태를 null로 재설정
+
+        // 로그아웃 처리
+        const { error: signOutError } = await supabase.auth.signOut();
+        if (signOutError) {
+          console.error('로그아웃 오류:', signOutError);
+        }
+      } catch (error) {
+        // 지금 상태
+        console.error('회원탈퇴 오류:', error);
+      }
     },
     user
   };

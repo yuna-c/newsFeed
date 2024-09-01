@@ -8,6 +8,7 @@ import SignUp from '../components/auth/SignUp';
 import MyPage from '../components/mypage/Mypage';
 import Detail from '../detail/Detail';
 import Write from '../components/WritePage/Write';
+import DropUser from '../components/auth/DropUser';
 
 export default function Router() {
   return (
@@ -21,6 +22,7 @@ export default function Router() {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/detail" element={<Detail />} />
           <Route path="/write" element={<Write />} />
+          <Route path="/drop" element={<DropUser />} />
         </Routes>
         <Footer />
       </BrowserRouter>

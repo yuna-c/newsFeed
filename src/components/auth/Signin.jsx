@@ -23,7 +23,7 @@ const SignIn = () => {
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
 
-  const { signIn } = useAuth(); // useAuth를 함수로 호출해야 함
+  const { signIn } = useAuth();
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -39,10 +39,10 @@ const SignIn = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
-    const { error } = await signIn({ email, password });
+    const result = await signIn({ email, password }); // result를 안전하게 다룸
 
-    if (error) {
-      setError(error);
+    if (result?.error) {
+      setError(result.error);
       setMessage('이메일 또는 비밀번호가 틀렸습니다. 다시 확인해 주세요');
       return;
     }
@@ -73,10 +73,10 @@ const SignIn = () => {
             <button type="submit">로그인</button>
             <Link to="/signup">회원가입</Link>
           </form>
-          {message ? alert(message) : ''}
         </Article>
       </Section>
     </Layout>
   );
 };
+
 export default SignIn;

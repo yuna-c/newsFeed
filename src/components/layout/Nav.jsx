@@ -23,12 +23,18 @@ const Nav = () => {
               <Link to="/mypage">마이페이지</Link>
             </li>
             <li>
+              <Link to="/drop">회원탈퇴</Link>
+            </li>
+            <li>
               <Link to="/write">글쓰기</Link>
             </li>
             <li>
               <Link to="/" onClick={handleSignout}>
                 로그아웃
               </Link>
+            </li>
+            <li>
+              <span>유저 이메일: {user.email}</span>
             </li>
           </>
         ) : (
