@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from '../components/layout/Header';
+import Nav from '../components/layout/Nav';
 import Footer from '../components/layout/Footer';
 import MainPage from '../components/main/MainPage';
 import SignIn from '../components/AuthPages/SignIn';
@@ -11,8 +11,8 @@ import Write from '../components/WritePage/Write';
 export default function Router() {
   return (
     <>
-      <Header />
       <BrowserRouter>
+        <Nav />
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/signin" element={<SignIn />} />
@@ -25,4 +25,4 @@ export default function Router() {
       <Footer />
     </>
   );
-}
+};
