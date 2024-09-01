@@ -42,7 +42,6 @@ export function AuthProvider({ children }) {
   }, []);
 
   const value = {
-    // 회원가입 후 자동 로그인 방지인데 안됨.. ㅠㅠ
     signUp: async (data) => {
       const { user, error } = await supabase.auth.signUp(data);
 
@@ -51,11 +50,31 @@ export function AuthProvider({ children }) {
         return { error };
       }
 
-      // 여기서 로그인을 따로 진행하지 않고, 필요한 경우 사용자가 직접 로그인을 시도
+      alert('회원가입 되었습니다. 로그인 페이지로 이동합니다.');
+
       return { user };
     },
-    signIn: (data) => supabase.auth.signInWithPassword(data),
-    signOut: () => supabase.auth.signOut(),
+    signIn: async (data) => {
+      const { error } = await supabase.auth.signInWithPassword(data);
+
+      if (error) {
+        console.error('Signin error:', error);
+        return { error };
+      }
+
+      alert('로그인 되었습니다.');
+    },
+    signOut: async () => {
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error('Signout error:', error);
+        return { error };
+      }
+
+      alert('로그아웃 되었습니다.');
+      setUser(null);
+    },
     user
   };
 

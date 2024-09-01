@@ -2,11 +2,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
+import MainPage from '../components/main/MainPage';
+import SignIn from '../components/auth/SignIn';
+import SignUp from '../components/auth/SignUp';
 import MyPage from '../components/mypage/Mypage';
-import Login from '../components/auth/Login';
-import SignUp from '../components/auth/Signup';
 import Detail from '../detail/Detail';
-import AddPost from '../components/post/AddPost';
+import Write from '../components/WritePage/Write';
 
 export default function Router() {
   return (
@@ -14,12 +15,12 @@ export default function Router() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/" element={<div>Home</div>} />
+          <Route path="/" element={<MainPage />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/detail" element={<Detail />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/signup" element={<SignUp />} />
-          <Route exact path="/addpost" element={<AddPost />} />
+          <Route path="/write" element={<Write />} />
         </Routes>
         <Footer />
       </BrowserRouter>

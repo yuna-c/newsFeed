@@ -1,5 +1,5 @@
 import { useAuth } from '../../context/AuthContext';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -10,7 +10,6 @@ const InputField = styled.div`
   padding: 10px;
   display: flex;
   align-items: flex-end;
-  color: var(--pointColor);
 `;
 
 const Input = styled.input`
@@ -24,8 +23,16 @@ const SignUp = () => {
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
 
-  const { signUp } = useAuth(); // useAuth를 함수로 호출해야 함
+  const { signUp } = useAuth();
   let navigate = useNavigate();
+
+  useEffect(() => {
+    if (message) {
+      console.log('Alert message:', message); // message 상태가 업데이트되는지 확인
+      alert(message);
+      setMessage(''); // alert 후 message를 초기화하여 재사용 가능
+    }
+  }, [message]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,20 +40,30 @@ const SignUp = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
+    // 이메일 형식 검증
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      setMessage('올바른 이메일 주소를 입력하세요.');
+      return;
+    }
+
+    // 비밀번호 길이 검증
+    if (password.length < 6) {
+      setMessage('비밀번호는 최소 6자 이상이어야 합니다.');
+      return;
+    }
+
     const { error } = await signUp({ email, password });
 
     if (error) {
       setError(error);
-      setMessage('error with email or password');
+      setMessage('이메일 또는 비밀번호가 틀렸습니다. 다시 확인해 주세요');
+
       return;
     }
 
-    // navigate('/')
-    // window.location.reload()
-
     // 회원가입 성공 후 로그인 페이지로 이동
-    setMessage('Signup successful! Please log in.');
-    navigate('/login');
+    navigate('/signin');
   };
 
   return (
@@ -79,12 +96,12 @@ const SignUp = () => {
             <br />
             <br />
             <button type="submit">회원가입</button>
-            <Link to="/login">로그인</Link>
+            <Link to="/signin">로그인</Link>
           </form>
-          {message ? alert(message)(<p>{message}</p>) : ''}
         </Article>
       </Section>
     </Layout>
   );
 };
+
 export default SignUp;

@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Orbitron&display=swap');
-/* @import 'reset.css'; */
+@import 'reset.css';
 
 /* 공통적으로 쓸 color, fontFamily, fontSize, rgbaColorCode 설정   */
 :root {
@@ -17,4 +17,5 @@
 
 body {
   /* background-color: skyblue; */
+  font-family: 'Paperlogy-8ExtraBold';
 }

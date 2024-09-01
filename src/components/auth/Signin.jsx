@@ -1,5 +1,5 @@
 import { useAuth } from '../../context/AuthContext';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -10,7 +10,6 @@ const InputField = styled.div`
   padding: 10px;
   display: flex;
   align-items: flex-end;
-  color: var(--pointColor);
 `;
 
 const Input = styled.input`
@@ -18,7 +17,7 @@ const Input = styled.input`
   border-bottom: 1px solid #000;
 `;
 
-const Login = () => {
+const SignIn = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const [error, setError] = useState(null);
@@ -26,6 +25,13 @@ const Login = () => {
 
   const { signIn } = useAuth(); // useAuth를 함수로 호출해야 함
   let navigate = useNavigate();
+
+  useEffect(() => {
+    if (message) {
+      alert(message);
+      setMessage(''); // alert 후 message를 초기화하여 재사용
+    }
+  }, [message]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +43,7 @@ const Login = () => {
 
     if (error) {
       setError(error);
-      setMessage('error with email or password');
+      setMessage('이메일 또는 비밀번호가 틀렸습니다. 다시 확인해 주세요');
       return;
     }
 
@@ -48,22 +54,17 @@ const Login = () => {
   return (
     <Layout title={'Login'}>
       <Section>
-        <h2>로그인하기</h2>
         <Article>
           <form onSubmit={handleSubmit}>
-            <h1>Please sign in</h1>
+            <h1>로그인 하기</h1>
             <InputField>
-              <label htmlFor="inputEmail" style={{ width: '80px', display: 'inline-block' }}>
-                이메일
-              </label>
+              <label htmlFor="inputEmail">이메일</label>
               <Input ref={emailRef} type="email" id="inputEmail" placeholder="Email address" required />
             </InputField>
             <br />
             <br />
             <InputField>
-              <label htmlFor="inputPassword" style={{ width: '80px', display: 'inline-block' }}>
-                비밀번호
-              </label>
+              <label htmlFor="inputPassword">비밀번호</label>
               <Input ref={passwordRef} type="password" id="inputPassword" placeholder="Password" required />
             </InputField>
 
@@ -78,4 +79,4 @@ const Login = () => {
     </Layout>
   );
 };
-export default Login;
+export default SignIn;
