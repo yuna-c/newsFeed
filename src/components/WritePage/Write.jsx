@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import supabase from '../../api/supabase';
 import { useNavigate } from 'react-router-dom';
 import { Editor } from '@toast-ui/react-editor';
-import { FormContainer, FormGroup, Label, Input, TextArea, Button } from '../../styles/layout-write';
+import { FormContainer, FormGroup, Label, Input, TextArea, Button } from '../../styles/write';
 
 import Layout from '../layout/Layout';
 
@@ -21,7 +21,7 @@ const Write = () => {
     try {
       setUploading(true);
       if (!e.target.files || e.target.files.length === 0) {
-        throw new Error('You must select an image to upload');
+        throw new Error('업로드할 이미지를 선택해야 합니다');
       }
 
       const file = e.target.files[0];
@@ -32,7 +32,7 @@ const Write = () => {
       let { data, error: uploadError } = await supabase.storage.from('blogimage').upload(filePath, file);
       if (uploadError) throw uploadError;
 
-      console.log('Image uploaded:', data);
+      console.log('이미지가 업로드:', data);
       getUrl(filePath);
     } catch (error) {
       alert(error.message);
