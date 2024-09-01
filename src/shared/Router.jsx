@@ -1,18 +1,20 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Nav from '../components/layout/Nav';
+
+import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import MainPage from '../components/main/MainPage';
-import SignIn from '../components/AuthPages/SignIn';
-import SignUp from '../components/AuthPages/SignUp';
+import SignIn from '../components/auth/SignIn';
+import SignUp from '../components/auth/SignUp';
 import MyPage from '../components/mypage/Mypage';
 import Detail from '../detail/Detail';
 import Write from '../components/WritePage/Write';
+import DropUser from '../components/auth/DropUser';
 
 export default function Router() {
   return (
     <>
       <BrowserRouter>
-        <Nav />
+        <Header />
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/signin" element={<SignIn />} />
@@ -20,9 +22,10 @@ export default function Router() {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/detail" element={<Detail />} />
           <Route path="/write" element={<Write />} />
+          <Route path="/drop" element={<DropUser />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
-      <Footer />
     </>
   );
-};
+}
