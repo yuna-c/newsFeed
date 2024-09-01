@@ -47,7 +47,6 @@ export const NavDiv = styled.ul`
 
   li {
     margin: 10px;
-    display: flex;
   }
 `;
 
