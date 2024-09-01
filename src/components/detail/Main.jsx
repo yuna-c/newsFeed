@@ -36,7 +36,6 @@ export default function Main() {
             data.map((post) => {
               return (
                 <div key={post.id}>
-                  {/* <!-- Post preview--> */}
                   <div className="post-preview">
                     <Link to={`/singlepost/${post.id}`}>
                       <h2 className="post-title">{post.title}</h2>
