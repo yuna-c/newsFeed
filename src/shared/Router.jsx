@@ -11,8 +11,8 @@ import Write from '../components/WritePage/Write';
 export default function Router() {
   return (
     <>
-      <Header />
       <BrowserRouter>
+      <Header />
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/signin" element={<SignIn />} />

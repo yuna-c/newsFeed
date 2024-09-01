@@ -1,8 +1,9 @@
-import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient';
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { UserContext } from '../../context/UserContext';
+import supabase from '../../api/supabase';
 
 const Write = () => {
-const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -12,16 +13,16 @@ const {user} = useContext(UserContext);
     e.preventDefault();
 
     // supabase의 posts에 insert
-    await Supabase.from("posts").insert([
+    await supabase.from('posts').insert([
       {
         title,
         content,
-        user_id: user.id,
-      },
+        user_id: user.id
+      }
     ]);
 
-    setTitle("");
-    setContent("");
+    setTitle('');
+    setContent('');
   };
 
   return (
@@ -29,7 +30,7 @@ const {user} = useContext(UserContext);
       <h1>Write</h1>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-        <textarea placeholder="Content" value={content} onchang={(e) => setContent(e.target.value)} />
+        <textarea placeholder="Content" value={content} onChange={(e) => setContent(e.target.value)} />
         <button type="submit">Submit</button>
       </form>
     </div>
