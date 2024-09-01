@@ -1,5 +1,5 @@
 import { Provider } from 'react-redux';
-import store from './redux/config/configStore';
+import store from './styles/redux/config/configStore';
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
