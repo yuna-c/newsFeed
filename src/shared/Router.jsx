@@ -7,6 +7,7 @@ import Login from '../components/auth/Login';
 import SignUp from '../components/auth/Signup';
 import Detail from '../detail/Detail';
 import AddPost from '../components/post/AddPost';
+import DropUser from '../components/mypage/DropUser';
 
 export default function Router() {
   return (
@@ -19,6 +20,7 @@ export default function Router() {
           <Route path="/detail" element={<Detail />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<SignUp />} />
+          <Route path="/drop" element={<DropUser />} />
           <Route exact path="/addpost" element={<AddPost />} />
         </Routes>
         <Footer />
