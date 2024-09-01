@@ -1,6 +1,6 @@
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { NavDiv } from '../../styles/layout';
+import { LogoDiv, NavDiv } from '../../styles/layout';
 
 const Nav = () => {
   const { user, signOut } = useAuth();
@@ -12,10 +12,13 @@ const Nav = () => {
   };
 
   return (
-    <nav className="Nav">
-      <ul>
+    <>
+      <LogoDiv>
+        <Link to="/">홈 로고</Link>
+      </LogoDiv>
+      <NavDiv className="Nav">
         <li>
-          <Link to="/">홈</Link>
+          <Link to="/">전체 글</Link>
         </li>
         {user ? (
           <>
@@ -29,12 +32,15 @@ const Nav = () => {
               <Link to="/write">글쓰기</Link>
             </li>
             <li>
+              <Link to="/post">작성 글</Link>
+            </li>
+            <li>
               <Link to="/" onClick={handleSignout}>
                 로그아웃
               </Link>
             </li>
             <li>
-              <span>유저 이메일: {user.email}</span>
+              <span>{user.email}님 환영합니다</span>
             </li>
           </>
         ) : (
@@ -47,8 +53,8 @@ const Nav = () => {
             </li>
           </>
         )}
-      </ul>
-    </nav>
+      </NavDiv>
+    </>
   );
 };
 export default Nav;

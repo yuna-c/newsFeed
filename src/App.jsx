@@ -16,13 +16,11 @@ function App() {
   // console.log(`supabase=>`, supabase);
 
   return (
-    <>
-      <Wrap id="Wrap">
-        <AuthProvider>
-          <Router />
-        </AuthProvider>
-      </Wrap>
-    </>
+    <Wrap id="Wrap">
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
+    </Wrap>
   );
 }
 

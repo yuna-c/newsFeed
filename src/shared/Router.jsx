@@ -10,6 +10,9 @@ import Detail from '../detail/Detail';
 import Write from '../components/WritePage/Write';
 import DropUser from '../components/auth/DropUser';
 
+import UnauthRoute from './UnauthRoute';
+import AuthRoute from './AuthRouter';
+
 export default function Router() {
   return (
     <>
@@ -17,12 +20,17 @@ export default function Router() {
         <Header />
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/detail" element={<Detail />} />
-          <Route path="/write" element={<Write />} />
-          <Route path="/drop" element={<DropUser />} />
+          <Route element={<UnauthRoute />}>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Route>
+          <Route element={<AuthRoute />}>
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/detail" element={<Detail />} />
+            <Route path="/write" element={<Write />} />
+            <Route path="/drop" element={<DropUser />} />
+          </Route>
         </Routes>
         <Footer />
       </BrowserRouter>
