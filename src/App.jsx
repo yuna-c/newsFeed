@@ -1,14 +1,14 @@
-import { UseProvider } from './context/UserContext';
+import { UserProvider } from './context/UserContext'; // 수정된 import
 import { Wrap } from './styles/layout';
 import Router from './shared/Router';
 
 function App() {
   return (
-    <UseProvider>
-        <Wrap id="Wrap">
-          <Router />
-        </Wrap>
-    </UseProvider>
+    <UserProvider> {/* 수정된 부분 */}
+      <Wrap id="Wrap">
+        <Router />
+      </Wrap>
+    </UserProvider>
   );
 }
 

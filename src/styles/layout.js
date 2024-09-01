@@ -1,5 +1,7 @@
 // layout styled
 import styled from 'styled-components';
+import "@toast-ui/editor/dist/toastui-editor.css";
+
 
 export const Wrap = styled.div`
   width: 100%;
@@ -26,7 +28,7 @@ export const Article = styled.article`
   border: 1px solid yellow;
 `;
 
-export const HeaderDiv = styled.header`
+export const NavDiv = styled.div`
   background-color: #ddd;
 `;
 

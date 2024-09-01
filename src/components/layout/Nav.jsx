@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { HeaderDiv } from '../../styles/layout';
+import { NavDiv } from '../../styles/layout';
 
-export default function Header() {
+export default function Nav() {
   return (
-    <HeaderDiv className="Header">
+    <NavDiv className="Nav">
       <nav>
         <ul>
           <li>
@@ -26,6 +26,6 @@ export default function Header() {
           </li>
         </ul>
       </nav>
-    </HeaderDiv>
+    </NavDiv>
   );
 }
