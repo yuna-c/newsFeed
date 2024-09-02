@@ -23,9 +23,9 @@ export default function Router() {
         <Header />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/MainPage" element={<MainPage />} />
+          {/* <Route path="/" element={<MainPage />} /> */}
           <Route element={<UnauthRoute />}>
-            <Route path="/" element={<MainPage />} />
+            {/* <Route path="/" element={<Main />} /> */}
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
           </Route>
@@ -38,8 +38,8 @@ export default function Router() {
             <Route path="/addpost" element={<AddPost />} />
             {/* 개인 글 이동 : 수정 삭제 버튼 아직 안됌 */}
             <Route path="/singlepost/:id" element={<SinglePost />} />
-            <Route path="/detail" element={<Detail />} />
-            <Route path="/drop" element={<DropUser />} />
+            {/* <Route path="/detail" element={<Detail />} /> */}
+            {/* <Route path="/drop" element={<DropUser />} /> */}
           </Route>
         </Routes>
         <Footer />

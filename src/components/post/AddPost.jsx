@@ -1,15 +1,17 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { supabase } from '../../api/supabase';
-import { v4 as uuidv4 } from 'uuid';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Editor } from '@toast-ui/react-editor';
 
-import { Section, Article } from '../../styles/layout';
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
+import { Section, Article } from '../../styles/layout';
 
 const AddPost = () => {
-  const editorRef = useRef(null);
+  const { user } = useAuth();
+  // user정보
+  console.log(user.id, user.email, user.password);
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
@@ -34,11 +36,10 @@ const AddPost = () => {
 
       let { data, error: uploadError } = await supabase.storage.from('blogimage').upload(filePath, file);
       // console.log(supabase.storage.from('image').getPublicUrl(url).data.publicUrl)
-      console.log(data);
 
       if (uploadError) throw uploadError;
-
-      console.log(data); // 이미지 경로 저장
+      // 이미지 경로 저장
+      console.log(data);
       getURL(filePath);
     } catch (error) {
       alert(error.message);
@@ -54,8 +55,8 @@ const AddPost = () => {
       } = await supabase.storage.from('blogimage').getPublicUrl(url);
 
       if (error) throw error;
-
-      setImage(publicUrl); // 이미지 URL 설정
+      // 이미지 URL 설정
+      setImage(publicUrl);
     } catch (error) {
       alert(error.message);
     } finally {
@@ -75,7 +76,7 @@ const AddPost = () => {
 
     try {
       const updates = {
-        id: uuidv4(),
+        user_id: user.id,
         title: title,
         description: description,
         content: content,
@@ -86,16 +87,10 @@ const AddPost = () => {
 
       if (error) throw error;
 
-      navigate('/'); // 업로드 후 메인 페이지로 이동
+      // 업로드 후 메인 페이지로 이동
+      navigate('/');
     } catch (error) {
       alert(error.message);
-    }
-  };
-
-  // 에디터 내용 변경 시 호출
-  const handleEditorChange = () => {
-    if (editorRef.current) {
-      setContent(editorRef.current.getInstance().getMarkdown());
     }
   };
 
@@ -104,8 +99,6 @@ const AddPost = () => {
       <Section>
         <Article>
           <h2>글쓰기 </h2>
-
-          <br />
 
           <form onSubmit={addBlog}>
             <div>
@@ -139,27 +132,9 @@ const AddPost = () => {
             </div>
 
             <div>
-              <label>Post content</label>
-              <Editor
-                ref={editorRef}
-                initialEditType="markdown"
-                previewStyle="vertical"
-                height="400px"
-                initialValue="Hello, TOAST UI Editor!"
-                onChange={handleEditorChange}
-              />
-            </div>
-
-            <div>
-              {/* <label>이미지</label> */}
               <input accept="image/*" onChange={uploadImage} type="file" className="form-control" />
             </div>
-            <Button
-              // onClick={() => addBlog({ title, description, content, image })}
-              disabled={uploading}
-              className="btn btn-lg btn-secondary btn-block"
-              type="submit"
-            >
+            <Button disabled={uploading} className="btn btn-lg btn-secondary btn-block" type="submit">
               {uploading ? 'uploading...' : 'Add'}
             </Button>
           </form>

@@ -24,9 +24,6 @@ const SinglePost = () => {
           throw error;
         }
 
-        console.log(`데이터 배열 확인 => `, data);
-
-        // console.log(data.image);
         setData(data[0]);
       } catch (error) {
         console.log(error.message);
@@ -36,7 +33,7 @@ const SinglePost = () => {
     getPost();
   }, [id]);
 
-  // 추가: 포스트 삭제 함수
+  // 포스트 삭제 함수
   const deletePost = async () => {
     const confirmDelete = window.confirm('이 포스트를 삭제하시겠습니까?');
     if (!confirmDelete) return;
@@ -50,7 +47,7 @@ const SinglePost = () => {
       }
 
       alert('포스트가 성공적으로 삭제되었습니다.');
-      navigate('/'); // 삭제 후 메인 페이지로 이동
+      // navigate('/'); // 메인 페이지로 이동 후 데이터를 다시 로드하게 됩니다.
     } catch (error) {
       console.error('삭제 중 오류 발생:', error.message);
     }

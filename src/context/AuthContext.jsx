@@ -68,7 +68,7 @@ export function AuthProvider({ children }) {
       if (error) {
         console.error('로그아웃 오류:', error);
       } else {
-        alert('로그아웃 완료');
+        // alert('로그아웃 완료');
         setUser(null); // 로그아웃 후 사용자 상태를 null로 재설정
       }
     },

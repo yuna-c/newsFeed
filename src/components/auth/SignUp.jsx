@@ -18,7 +18,7 @@ const Input = styled.input`
 `;
 
 const SignUp = () => {
-  // const nameRef = useRef();
+  const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef(); // 비밀번호 확인 필드용 useRef
@@ -38,7 +38,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const name = nameRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
@@ -79,6 +79,12 @@ const SignUp = () => {
         <Article>
           <form onSubmit={handleSubmit}>
             <h1>Please sign up</h1>
+            <InputField>
+              <label htmlFor="inputName" style={{ width: '100px', display: 'inline-block' }}>
+                닉네임
+              </label>
+              <Input ref={nameRef} type="name" id="inputName" placeholder="Email address" required />
+            </InputField>
             <InputField>
               <label htmlFor="inputEmail" style={{ width: '100px', display: 'inline-block' }}>
                 이메일
