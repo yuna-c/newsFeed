@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { supabase } from '../../api/supabase';
+import { supabase } from '../../assets/api/supabase';
 import { useNavigate } from 'react-router-dom';
 import { Editor } from '@toast-ui/react-editor';
 import { FormContainer, FormGroup, Label, Input, TextArea, Button } from '../../styles/write';
