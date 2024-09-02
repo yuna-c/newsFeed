@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PostCardContainer, PostCardProfile, PostContent, PostImg, LikeButton } from '../../styles/layout-main';
+import { PostCardContainer, PostCardProfile, PostContent, PostImg, LikeButton } from '../../styles/main';
 
 function PostCard() {
   return (

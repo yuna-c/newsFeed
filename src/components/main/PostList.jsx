@@ -1,4 +1,4 @@
-import { PostListContainer } from '../../styles/layout-main';
+import { PostListContainer } from '../../styles/main';
 import PostCard from './PostCard';
 
 const PostList = () => {

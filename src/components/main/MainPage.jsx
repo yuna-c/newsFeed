@@ -1,4 +1,4 @@
-import { MainPageContainer } from '../../styles/layout-main';
+import { MainPageContainer } from '../../styles/main';
 import PostList from './PostList';
 
 const MainPage = () => {
