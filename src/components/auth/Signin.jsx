@@ -1,21 +1,11 @@
 import { useAuth } from '../../context/AuthContext';
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 
+import { ButtonContainer, FormContainer, Title2, InputField, Input, Label } from '../../styles/common.js';
 import { Section, Article } from '../../styles/layout';
 import Layout from '../layout/Layout';
-
-const InputField = styled.div`
-  padding: 10px;
-  display: flex;
-  align-items: flex-end;
-`;
-
-const Input = styled.input`
-  padding: 5px;
-  border-bottom: 1px solid #000;
-`;
+import Button from './../common/Button';
 
 const SignIn = () => {
   const emailRef = useRef();
@@ -26,10 +16,10 @@ const SignIn = () => {
   const { signIn } = useAuth();
   let navigate = useNavigate();
 
+  // alert 후 message를 초기화하여 재사용
   useEffect(() => {
     if (message) {
       alert(message);
-      // alert 후 message를 초기화하여 재사용
       setMessage('');
     }
   }, [message]);
@@ -55,25 +45,29 @@ const SignIn = () => {
     <Layout title={'Login'}>
       <Section>
         <Article>
-          <form onSubmit={handleSubmit}>
-            <h1>로그인 하기</h1>
+          <Title2>로그인</Title2>
+
+          <FormContainer onSubmit={handleSubmit}>
             <InputField>
-              <label htmlFor="inputEmail" style={{ width: '100px', display: 'inline-block' }}>
-                이메일
-              </label>
+              <Label htmlFor="inputEmail">이메일</Label>
               <Input ref={emailRef} type="email" id="inputEmail" placeholder="Email address" required />
             </InputField>
 
             <InputField>
-              <label htmlFor="inputPassword" style={{ width: '100px', display: 'inline-block' }}>
-                비밀번호
-              </label>
+              <Label htmlFor="inputPassword">비밀번호</Label>
               <Input ref={passwordRef} type="password" id="inputPassword" placeholder="Password" required />
             </InputField>
 
-            <button type="submit">로그인</button>
-            <Link to="/signup">회원가입</Link>
-          </form>
+            <ButtonContainer>
+              <Button type="submit" $red>
+                로그인
+              </Button>
+
+              <Button>
+                <Link to="/signup">회원가입</Link>
+              </Button>
+            </ButtonContainer>
+          </FormContainer>
         </Article>
       </Section>
     </Layout>

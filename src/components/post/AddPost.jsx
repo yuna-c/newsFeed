@@ -6,6 +6,16 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
 import { Section, Article } from '../../styles/layout';
+import {
+  Title2,
+  WriteFormContainer,
+  WirteInputField,
+  WirteLabel,
+  WirteInput,
+  WirteTextarea,
+  ButtonContainer,
+  WirteButtonContainer
+} from '../../styles/common';
 
 const AddPost = () => {
   const { user } = useAuth();
@@ -65,7 +75,7 @@ const AddPost = () => {
   };
 
   // 1. 블로그 글 올리기
-  const addBlog = async (e) => {
+  const onHandleWrite = async (e) => {
     e.preventDefault();
 
     // 이미지 업로드가 완료되지 않았을 경우 경고
@@ -104,46 +114,50 @@ const AddPost = () => {
     <Layout title={'AddPost'}>
       <Section>
         <Article>
-          <h2>글쓰기 </h2>
+          <Title2>글쓰기</Title2>
 
-          <form onSubmit={addBlog}>
-            <div>
-              <label>제목</label>
-              <input
+          <WriteFormContainer onSubmit={onHandleWrite}>
+            <WirteInputField>
+              <WirteLabel>제목</WirteLabel>
+              <WirteInput
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="title"
                 className="form-control"
               />
-            </div>
+            </WirteInputField>
 
-            <div>
-              <label>해시 태그</label>
-              <input
+            <WirteInputField>
+              <WirteLabel>해시 태그</WirteLabel>
+              <WirteInput
                 value={description}
                 placeholder="description"
                 onChange={(e) => setDescription(e.target.value)}
                 className="form-control"
               />
-            </div>
+            </WirteInputField>
 
-            <div>
-              <label className="form-label px-0">컨텐츠</label>
-              <textarea
+            <WirteInputField>
+              <WirteLabel>컨텐츠</WirteLabel>
+              <WirteTextarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="content"
                 className="form-control"
               />
-            </div>
+            </WirteInputField>
 
-            <div>
-              <input accept="image/*" onChange={uploadImage} type="file" className="form-control" />
-            </div>
-            <Button disabled={uploading} className="btn btn-lg btn-secondary btn-block" type="submit">
-              {uploading ? 'uploading...' : 'Add'}
-            </Button>
-          </form>
+            <WirteInputField>
+              <WirteLabel></WirteLabel>
+              <WirteInput accept="image/*" onChange={uploadImage} type="file" className="form-control" />
+            </WirteInputField>
+
+            <WirteButtonContainer>
+              <Button disabled={uploading} className="btn btn-lg btn-secondary btn-block" $blue type="submit">
+                {uploading ? 'uploading...' : 'Add'}
+              </Button>
+            </WirteButtonContainer>
+          </WriteFormContainer>
         </Article>
       </Section>
     </Layout>

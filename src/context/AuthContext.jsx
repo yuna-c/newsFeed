@@ -24,10 +24,10 @@ export function AuthProvider({ children }) {
         setUser(session?.user ?? null);
       }
 
-      const currentUser = supabase.auth.user;
-      if (!session && currentUser) {
-        setUser(currentUser);
-      }
+      // const currentUser = supabase.auth.user;
+      // if (!session && currentUser) {
+      //   setUser(currentUser);
+      // }
 
       setLoading(false);
     };
@@ -37,10 +37,10 @@ export function AuthProvider({ children }) {
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       // console.log('인증상태 변경됨:', event, session)
       setUser(session?.user ?? null);
-      if (session) {
-        console.log(session.user.email);
-        console.log(session);
-      }
+      // if (session) {
+      //   console.log(session.user.email);
+      //   console.log(session);
+      // }
       setLoading(false);
     });
 
@@ -76,7 +76,6 @@ export function AuthProvider({ children }) {
       if (error) {
         console.error('로그아웃 오류:', error);
       } else {
-        // alert('로그아웃 완료'); 로그아웃 후 사용자 상태를 null로 재설정
         setUser(null);
       }
     },

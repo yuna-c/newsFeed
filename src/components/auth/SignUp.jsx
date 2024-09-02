@@ -1,21 +1,11 @@
 import { useAuth } from '../../context/AuthContext';
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 
+import { ButtonContainer, FormContainer, Title2, InputField, Input, Label } from '../../styles/common.js';
 import { Section, Article } from '../../styles/layout';
 import Layout from '../layout/Layout';
-
-const InputField = styled.div`
-  padding: 10px;
-  display: flex;
-  align-items: flex-end;
-`;
-
-const Input = styled.input`
-  padding: 5px;
-  border-bottom: 1px solid #000;
-`;
+import Button from './../common/Button';
 
 const SignUp = () => {
   const emailRef = useRef();
@@ -36,15 +26,10 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const name = nameRef.current.value;
+
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
-
-    // 인풋값들 콘솔로 출력
-    // console.log('이메일:', email);
-    // console.log('비밀번호:', password);
-    // console.log('비밀번호 확인:', confirmPassword);
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
@@ -62,7 +47,6 @@ const SignUp = () => {
       return;
     }
 
-    // 회원가입 처리
     const { error } = await signUp({ email, password });
 
     if (error) {
@@ -71,10 +55,15 @@ const SignUp = () => {
       return;
     }
 
-    // 콘솔에 프로필 데이터 출력
-    console.log('회원가입 성공, 프로필 정보:', data);
+    // 인풋값들 콘솔로 출력
+    // console.log('이메일:', email);
+    // console.log('비밀번호:', password);
+    // console.log('비밀번호 확인:', confirmPassword);
 
-    // 회원가입 후 로그아웃 처리 및 로그인 페이지로 이동 (원할 경우 활성화)
+    // 콘솔에 프로필 데이터 출력
+    // console.log('회원가입 성공, 프로필 정보:', data);
+
+    // 회원가입 후 로그아웃 처리 및 로그인 페이지로 이동
     await signOut();
     navigate('/signin');
   };
@@ -83,25 +72,19 @@ const SignUp = () => {
     <Layout title={'Signup'}>
       <Section>
         <Article>
-          <form onSubmit={handleSubmit}>
-            <h2>회원가입</h2>
+          <Title2>회원가입</Title2>
 
+          <FormContainer onSubmit={handleSubmit}>
             <InputField>
-              <label htmlFor="inputEmail" style={{ width: '100px', display: 'inline-block' }}>
-                이메일
-              </label>
+              <Label htmlFor="inputEmail">이메일</Label>
               <Input ref={emailRef} type="email" id="inputEmail" placeholder="Email address" required />
             </InputField>
             <InputField>
-              <label htmlFor="inputPassword" style={{ width: '100px', display: 'inline-block' }}>
-                비밀번호
-              </label>
+              <Label htmlFor="inputPassword">비밀번호</Label>
               <Input ref={passwordRef} type="password" id="inputPassword" placeholder="Password" required />
             </InputField>
             <InputField>
-              <label htmlFor="inputConfirmPassword" style={{ width: '100px', display: 'inline-block' }}>
-                비밀번호 확인
-              </label>
+              <Label htmlFor="inputConfirmPassword">비밀번호 확인</Label>
               <Input
                 ref={confirmPasswordRef}
                 type="password"
@@ -110,9 +93,17 @@ const SignUp = () => {
                 required
               />
             </InputField>
-            <button type="submit">회원가입</button>
-            <Link to="/signin">로그인</Link>
-          </form>
+
+            <ButtonContainer>
+              <Button type="submit" $blue>
+                회원가입
+              </Button>
+
+              <Button>
+                <Link to="/signin">로그인</Link>
+              </Button>
+            </ButtonContainer>
+          </FormContainer>
         </Article>
       </Section>
     </Layout>
