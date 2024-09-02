@@ -1,5 +1,5 @@
-import { supabase } from '../../api/supabase';
 import { useState, useEffect } from 'react';
+import { supabase } from '../../assets/api/supabase';
 
 import { Section, Article } from '../../styles/layout';
 import { Link } from 'react-router-dom';

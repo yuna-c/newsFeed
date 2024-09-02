@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { supabase } from '../../api/supabase';
+import { supabase } from '../../assets/api/supabase';
 
 import Layout from '../layout/Layout';
 import Button from '../common/Button';

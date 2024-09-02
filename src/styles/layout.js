@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import '@toast-ui/editor/dist/toastui-editor.css';
 /* ${reset} */
+
 export const Wrap = styled.div`
   margin: 10px;
   border: 1px solid #ddd;

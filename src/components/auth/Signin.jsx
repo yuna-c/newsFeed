@@ -29,7 +29,8 @@ const SignIn = () => {
   useEffect(() => {
     if (message) {
       alert(message);
-      setMessage(''); // alert 후 message를 초기화하여 재사용
+      // alert 후 message를 초기화하여 재사용
+      setMessage('');
     }
   }, [message]);
 
@@ -38,8 +39,8 @@ const SignIn = () => {
 
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-
-    const result = await signIn({ email, password }); // result를 안전하게 다룸
+    // result를 안전하게 다룸
+    const result = await signIn({ email, password });
     if (result?.error) {
       setError(result.error);
       setMessage('이메일 또는 비밀번호가 틀렸습니다. 다시 확인해 주세요');

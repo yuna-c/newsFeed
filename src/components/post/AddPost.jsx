@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '../../api/supabase';
+import { supabase } from '../../assets/api/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,7 +39,7 @@ const AddPost = () => {
 
       if (uploadError) throw uploadError;
       // 이미지 경로 저장
-      console.log(data);
+      console.log(`data=>`, data);
       getURL(filePath);
     } catch (error) {
       alert(error.message);
@@ -83,10 +83,16 @@ const AddPost = () => {
         image: image // 이미지 경로 저장
       };
 
-      let { error } = await supabase.from('post').insert(updates);
+      // let { error } = await supabase.from('post').insert(updates);
+      let { error, data } = await supabase.from('post').insert(updates);
+
+      if (error) {
+        console.error('Error inserting post:', error);
+      } else {
+        console.log('Post inserted successfully:', data);
+      }
 
       if (error) throw error;
-
       // 업로드 후 메인 페이지로 이동
       navigate('/');
     } catch (error) {
