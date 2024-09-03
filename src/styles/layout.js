@@ -1,32 +1,35 @@
 import styled from 'styled-components';
-import '@toast-ui/editor/dist/toastui-editor.css';
 /* ${reset} */
+
 export const Wrap = styled.div`
   margin: 10px;
   border: 1px solid #ddd;
   border-radius: 20px;
   overflow: hidden;
-  > * {
+  & > * {
     padding: 1rem;
+  }
+  & > section {
+    padding: 1.2rem;
   }
 `;
 
 export const Main = styled.main`
-  min-height: calc(100vh - 6rem);
-  border: 1px solid green;
+  min-height: calc(100vh - 9.5rem);
+  position: relative;
 `;
 
 export const Aside = styled.aside`
   border: 1px solid orange;
 `;
 
-export const Section = styled.section`
-  min-height: calc(100vh - 6rem);
-  border: 1px solid red;
-`;
+export const Section = styled.section``;
 
 export const Article = styled.article`
-  border: 1px solid yellow;
+  min-height: calc(100vh - 12rem);
+  & > * {
+    padding: 1rem;
+  }
 `;
 
 export const HeaderDiv = styled.header`

@@ -1,5 +1,5 @@
-import { supabase } from '../../api/supabase';
 import { useState, useEffect } from 'react';
+import { supabase } from '../../assets/api/supabase';
 
 import { Section, Article } from '../../styles/layout';
 import { Link } from 'react-router-dom';
@@ -36,7 +36,6 @@ export default function Main() {
             data.map((post) => {
               return (
                 <div key={post.id}>
-                  {/* <!-- Post preview--> */}
                   <div className="post-preview">
                     <Link to={`/singlepost/${post.id}`}>
                       <h2 className="post-title">{post.title}</h2>
