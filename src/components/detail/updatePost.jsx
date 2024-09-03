@@ -11,6 +11,7 @@ const UpdatePost = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');
+  const [uploading, setUploading] = useState(false); // 업로드 상태 추가
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -32,11 +33,43 @@ const UpdatePost = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const { error } = await supabase.from('post').update({ title, description, image }).eq('id', id);
+      const { error } = await supabase
+        .from('post')
+        .update({ title, description, image }) // 최신 이미지 상태가 포함되도록 수정
+        .eq('id', id);
       if (error) throw error;
       navigate(`/singlePost/${id}`); // 수정 후 게시글 페이지로 이동
     } catch (error) {
       console.error('게시글 수정 중 오류 발생:', error.message);
+    }
+  };
+
+  const uploadImage = async (e) => {
+    try {
+      setUploading(true);
+
+      if (!e.target.files || e.target.files.length === 0) {
+        throw new Error('업로드할 이미지를 선택해야 합니다');
+      }
+
+      const file = e.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      let { data, error: uploadError } = await supabase.storage.from('blogimage').upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl }, error: urlError } = await supabase.storage.from('blogimage').getPublicUrl(filePath);
+
+      if (urlError) throw urlError;
+
+      setImage(publicUrl); // 업로드된 이미지 URL을 상태에 저장
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -55,9 +88,15 @@ const UpdatePost = () => {
           </label>
           <label>
             이미지 URL:
-            <input type="text" value={image} onChange={(e) => setImage(e.target.value)} />
+            <input type="text" value={image} readOnly />
           </label>
-          <Button type="submit">게시글 수정</Button>
+          <label>
+            이미지 업로드:
+            <input accept="image/*" type="file" onChange={uploadImage} />
+          </label>
+          <Button type="submit" disabled={uploading}>
+            {uploading ? '업로드 중...' : '게시글 수정'}
+          </Button>
         </form>
       </div>
     </Layout>

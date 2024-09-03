@@ -9,7 +9,7 @@ import { supabase } from '../../assets/api/supabase';
 
 const SinglePost = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // useNavigate 훅 추가
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
@@ -53,7 +53,9 @@ const SinglePost = () => {
   // 댓글 추가
   const addComment = async (postId, content) => {
     try {
-      const { data, error } = await supabase.from('comment').insert([{ post_id: postId, content, user_id: user.id }]);
+      const { data, error } = await supabase
+        .from('comment')
+        .insert([{ post_id: postId, content, user_id: user.id, username: user.username }]);
       if (error) {
         throw error;
       }
@@ -143,6 +145,7 @@ const SinglePost = () => {
     setNewComment('');
     const updatedComments = await fetchComments(id);
     setComments(updatedComments);
+    console.log(user);
   };
 
   // 댓글 수정 처리
@@ -174,6 +177,7 @@ const SinglePost = () => {
       <Section className="single-post-container">
         <div className="post-content">
           <Article>
+            {/* <div> {data.map((post) => console.log(`프로필 정보 =>`, post))}</div> */}
             <h2>작성글 확인</h2>
             <h4>{data ? data.title : ''}</h4>
             <p className="subheading">{data ? data.description : ''}</p>
@@ -220,7 +224,7 @@ const SinglePost = () => {
                   <>
                     <p>{comment.content}</p>
                     <p>{new Date(comment.created_at).toLocaleString()}</p>
-                    <p>작성자: {comment.user_id === user.id ? '나' : '알 수 없음'}</p>
+                    <p>작성자: {comment.username}</p>
                     {comment.user_id === user.id && (
                       <>
                         <Button onClick={() => setEditingCommentId(comment.id)}>수정</Button>
