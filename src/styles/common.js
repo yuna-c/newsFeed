@@ -2,8 +2,12 @@
 import styled from 'styled-components';
 
 // 타이틀
-export const Title2 = styled.h2`
+export const Title = styled.h2`
   font-size: 1.8rem;
+`;
+
+export const Title2 = styled.h4`
+  font-size: 1.4rem;
 `;
 
 // 폼
@@ -59,6 +63,7 @@ export const Buttons = styled.button`
   width: 140px;
   height: auto;
   color: #fff;
+
   background-color: ${(props) => {
     if (props.$yellow) return '#f5b236'; // 노랑 배경
     if (props.$black) return '#000000'; // 검정 배경
@@ -66,9 +71,10 @@ export const Buttons = styled.button`
     if (props.$blue) return '#0077ff'; // 기본 빨간색 배경
     return '#9a9595'; // 회색 배경
   }};
+
   border: 0;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   opacity: 0.5;
   transition: 1.8s ease-in-out;
 
@@ -134,8 +140,10 @@ export const ColorText = styled.span`
     if (props.$blue) return '#0077ff'; // 기본 빨간색 배경
     return '#9a9595'; // 회색 배경
   }};
+
   font-weight: 600;
   transition: 1.8s ease-in-out;
+
   &:hover {
     opacity: 1;
   }
@@ -155,7 +163,7 @@ export const ImageContainer = styled.div`
   pointer-events: ${(props) => (props.isVisible ? 'auto' : 'none')};
 `;
 
-export const CircleDiv = styled.div`
+export const CircleContainer = styled.div`
   width: auto;
   margin: 30px;
   cursor: pointer;
@@ -179,6 +187,7 @@ export const CircleTemp = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   font-size: 0.8rem;
   color: #fff;
   border: 1px solid #ddd;
@@ -187,17 +196,37 @@ export const CircleTemp = styled.div`
 `;
 
 export const OutputText = styled.div`
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
   text-align: center;
-  background-color: #a39c9c;
+  background-color: #aeaaaabf;
   color: white;
-  padding: 10px;
   font-size: 1rem;
   transition: 2s ease-in-out;
+`;
+
+export const InfoText = styled.div`
+  position: relative;
+  margin-right: 20px;
+  font-weight: bold;
+
+  &::after {
+    content: '|';
+    position: absolute;
+    right: -15px;
+    color: #fff;
+  }
+
+  /* &:last-of-type::after {
+    content: '';
+  } */
 `;
 
 export const ProfileImage = styled.img`
@@ -224,12 +253,25 @@ export const UserAvatar = styled.span`
   overflow: hidden;
 `;
 
+export const UserAvatarSmall = styled.span`
+  width: 30px;
+  height: 30px;
+  padding: 0 !important;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  display: inline-block;
+  overflow: hidden;
+`;
+
 export const UserAvatarImg = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   cursor: pointer;
 `;
+
 export const UserAvatarTxt = styled.span`
   font-size: 1.2rem;
 `;
+
+export const NonData = styled.p``;

@@ -30,28 +30,38 @@ export const Article = styled.article`
   }
 `;
 
-export const HeaderDiv = styled.header`
+export const HeaderContainer = styled.header`
   background-color: #ddd;
   border-bottom: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
 `;
-export const FooterDiv = styled.footer`
+export const FooterContainer = styled.footer`
   background-color: #ddd;
   border-top: 1px solid #ddd;
   display: flex;
 `;
 
-export const NavDiv = styled.ul`
+export const NavContainer = styled.ul`
   display: flex;
+  align-items: center;
 
   li {
     margin: 10px;
   }
 `;
 
-export const LogoDiv = styled.div`
-  border: 1px solid red;
-  margin: 10px;
-  display: flex;
+export const LogoContainer = styled.div`
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  & > a {
+    display: flex;
+  }
+`;
+
+export const LogoImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;

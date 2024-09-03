@@ -6,9 +6,9 @@ import Layout from '../layout/Layout';
 import Button from './../common/Button';
 
 import { Section, Article } from '../../styles/layout';
-import { ButtonContainer, FormContainer, Title2, InputField, Input, Label } from '../../styles/common.js';
+import { ButtonContainer, FormContainer, Title, InputField, Input, Label } from '../../styles/common.js';
 
-const SignIn = () => {
+export default function SignIn() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const [error, setError] = useState(null);
@@ -46,7 +46,7 @@ const SignIn = () => {
     <Layout title={'Login'}>
       <Section>
         <Article>
-          <Title2>로그인</Title2>
+          <Title>로그인</Title>
 
           <FormContainer onSubmit={handleSubmit}>
             <InputField>
@@ -73,6 +73,4 @@ const SignIn = () => {
       </Section>
     </Layout>
   );
-};
-
-export default SignIn;
+}

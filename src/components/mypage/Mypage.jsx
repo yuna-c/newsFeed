@@ -8,14 +8,17 @@ import { Section, Article } from '../../styles/layout';
 import {
   ButtonContainer,
   FormContainer,
-  Title2,
+  Title,
   InputField,
   Input,
   Label,
-  CircleDiv,
+  CircleContainer,
   CircleImg,
   CircleTemp,
-  OutputText
+  OutputText,
+  UserAvatarImg,
+  UserAvatarSmall,
+  InfoText
 } from '../../styles/common.js';
 
 export default function Mypage() {
@@ -68,7 +71,8 @@ export default function Mypage() {
       reader.onloadend = () => {
         const imageUrl = reader.result;
         setPreview(imageUrl);
-        localStorage.setItem('profileImage', imageUrl); // 로컬 저장소에 저장
+        // 로컬 저장소에 저장
+        localStorage.setItem('profileImage', imageUrl);
       };
       reader.readAsDataURL(file);
     }
@@ -120,18 +124,16 @@ export default function Mypage() {
 
   const onHandleUpdate = async (e) => {
     e.preventDefault();
-    setUploading(true); // 업데이트 시작 시 로딩 상태로 전환
+    setUploading(true);
 
     try {
       const updatedName = nameRef.current.value;
       const updatedPassword = passwordRef.current.value;
 
-      // 이미지 업로드 처리
       if (selectedImage) {
         await uploadImage(selectedImage);
       }
 
-      // 이미지 업로드가 완료되지 않았을 경우 경고
       if (!image) {
         alert('이미지 업로드가 완료될 때까지 기다려주세요.');
         return;
@@ -164,14 +166,11 @@ export default function Mypage() {
         // 유저네임과 비밀번호 화면 하단에 표시
         setUsernameOutput(updatedName);
         setPasswordOutput(updatedPassword);
-
-        // 메시지 표시
         setShowOutput(true);
 
-        // 10초 후에 메시지 숨기기
         setTimeout(() => {
           setShowOutput(false);
-        }, 10000);
+        }, 6000);
       }
 
       // 비밀번호 업데이트
@@ -189,7 +188,7 @@ export default function Mypage() {
     } catch (error) {
       console.error('업데이트 중 오류 발생:', error);
     } finally {
-      setUploading(false); // 업데이트 완료 후 로딩 상태 해제
+      setUploading(false);
     }
   };
 
@@ -197,7 +196,7 @@ export default function Mypage() {
     <Layout title={'myPage'}>
       <Section>
         <Article>
-          <Title2>마이 페이지</Title2>
+          <Title>마이 페이지</Title>
 
           <FormContainer onSubmit={onHandleUpdate}>
             <InputField>
@@ -208,9 +207,9 @@ export default function Mypage() {
                 style={{ display: 'none' }}
                 onChange={handleImageChange}
               />
-              <CircleDiv onClick={handleImageClick}>
+              <CircleContainer onClick={handleImageClick}>
                 {preview ? <CircleImg src={preview} alt="Profile Preview" /> : <CircleTemp>Click to upload</CircleTemp>}
-              </CircleDiv>
+              </CircleContainer>
             </InputField>
             <InputField>
               <Label htmlFor="email">이메일 :</Label>
@@ -236,9 +235,11 @@ export default function Mypage() {
 
       {showOutput && (
         <OutputText>
-          Updated Username: {usernameOutput} | Updated Profile Image:
-          <img src={image} alt="Updated Profile" style={{ width: '50px', borderRadius: '50%' }} /> | Updated Password:{' '}
-          {passwordOutput}
+          <InfoText>닉네임 : {usernameOutput}</InfoText>
+          <InfoText>비밀번호 : {passwordOutput}</InfoText>
+          <UserAvatarSmall style={{ marginTop: '1px' }}>
+            <UserAvatarImg src={image} alt="Updated Profile" />
+          </UserAvatarSmall>
         </OutputText>
       )}
     </Layout>
