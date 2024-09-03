@@ -5,7 +5,7 @@ import './ex.css';
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
 import { Article, Section } from '../../styles/layout';
-import { supabase } from '../../api/supabase';
+import { supabase } from '../../assets/api/supabase';
 
 const SinglePost = () => {
   const { id } = useParams();
@@ -16,7 +16,7 @@ const SinglePost = () => {
   const [editingContent, setEditingContent] = useState('');
   const { user } = useAuth();
 
-  // 컴포넌트가 처음 렌더링될 때 포스트와 댓글을 가져오기
+  // 포스트와 댓글을 가져오기!
   useEffect(() => {
     const getBlog = async () => {
       try {
@@ -27,7 +27,7 @@ const SinglePost = () => {
           throw error;
         }
 
-        setData(data[0]); // 포스트 데이터를 상태에 저장!
+        setData(data[0]);
       } catch (error) {
         console.log('Error:', error.message);
       }
@@ -49,11 +49,11 @@ const SinglePost = () => {
       }
     };
 
-    getBlog(); //아래 두개 포함해서 블로그 데이터 가져오고 다른 아이디로 접속해도 보이게 하기
+    getBlog();
     getComments();
   }, [id]);
 
-  //댓글 추가
+  // 댓글 추가!
   const addComment = async (postId, content) => {
     try {
       const { data, error } = await supabase.from('comment').insert([{ post_id: postId, content, user_id: user.id }]);
@@ -68,7 +68,6 @@ const SinglePost = () => {
     }
   };
 
-  // 댓글 불러오기
   const fetchComments = async (postId) => {
     try {
       let { data, error } = await supabase.from('comment').select('*').eq('post_id', postId);
@@ -82,21 +81,22 @@ const SinglePost = () => {
       console.log('Error fetching comments:', error.message);
     }
   };
-  // 댓글 업데이트
+  // 댓글 수정
   const updateComment = async (commentId, content) => {
     try {
-      const { data, error } = await supabase.from('comment').update({ content }).eq('id', commentId);
+      console.log(content);
+      const { data, error } = await supabase.from('comment').update({ content: content }).eq('id', commentId).select();
 
       if (error) {
         throw error;
       }
-
+      console.log(data);
       return data;
     } catch (error) {
       console.log('Error updating comment:', error.message);
     }
   };
-  //삭제
+  // 댓글 삭제
   const deleteComment = async (commentId) => {
     try {
       const { data, error } = await supabase.from('comment').delete().eq('id', commentId);
@@ -126,6 +126,7 @@ const SinglePost = () => {
 
   const handleCommentEdit = async (commentId) => {
     if (editingContent.trim()) {
+      console.log(editingContent);
       await updateComment(commentId, editingContent);
       setEditingCommentId(null);
       setEditingContent('');
@@ -188,9 +189,13 @@ const SinglePost = () => {
                   <>
                     <p>{comment.content}</p>
                     <p>{new Date(comment.created_at).toLocaleString()}</p>
-                    <p>작성자: {comment.user ? comment.user_id.username : '알 수 없음'}</p>
-                    <Button onClick={() => setEditingCommentId(comment.id)}>수정</Button>
-                    <Button onClick={() => handleCommentDelete(comment.id)}>삭제</Button>
+                    <p>작성자: {comment.user_id === user.id ? '나' : '알 수 없음'}</p>
+                    {comment.user_id === user.id && (
+                      <>
+                        <Button onClick={() => setEditingCommentId(comment.id)}>수정</Button>
+                        <Button onClick={() => handleCommentDelete(comment.id)}>삭제</Button>
+                      </>
+                    )}
                   </>
                 )}
               </div>
