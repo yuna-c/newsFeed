@@ -1,6 +1,7 @@
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { LogoDiv, NavDiv } from '../../styles/layout';
+
 import { ColorText } from '../../styles/common';
 
 const Nav = () => {

@@ -2,10 +2,11 @@ import { useAuth } from '../../context/AuthContext';
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { ButtonContainer, FormContainer, Title2, InputField, Input, Label } from '../../styles/common.js';
-import { Section, Article } from '../../styles/layout';
 import Layout from '../layout/Layout';
 import Button from './../common/Button';
+
+import { Section, Article } from '../../styles/layout';
+import { ButtonContainer, FormContainer, Title2, InputField, Input, Label } from '../../styles/common.js';
 
 const SignIn = () => {
   const emailRef = useRef();

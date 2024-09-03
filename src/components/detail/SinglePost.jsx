@@ -5,6 +5,7 @@ import { supabase } from '../../assets/api/supabase';
 
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
+
 import { Article, Section } from '../../styles/layout';
 
 const SinglePost = () => {

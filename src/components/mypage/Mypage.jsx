@@ -1,9 +1,10 @@
 import { supabase } from '../../assets/api/supabase';
 import { useRef, useEffect, useState } from 'react';
 
-import { Section, Article } from '../../styles/layout';
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
+
+import { Section, Article } from '../../styles/layout';
 import {
   ButtonContainer,
   FormContainer,

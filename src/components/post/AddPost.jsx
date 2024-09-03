@@ -7,10 +7,27 @@ import { useNavigate } from 'react-router-dom';
 
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
+
 import { Section, Article } from '../../styles/layout';
+import {
+  Title2,
+  WriteFormContainer,
+  WriteInputField,
+  WriteLabel,
+  WriteInput,
+  WriteTextarea,
+  WriteButtonContainer,
+  UserAvatarContainer,
+  UserAvatar,
+  UserAvatarTxt,
+  UserAvatarImg
+} from '../../styles/common';
 
 const AddPost = () => {
+  // 프로필 사진 불러오는 곳
   const { user } = useAuth();
+  console.log('유저 정보 =>', user);
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
@@ -65,6 +82,7 @@ const AddPost = () => {
       let { data, error: uploadError } = await supabase.storage.from('blogimage').upload(filePath, file);
 
       if (uploadError) throw uploadError;
+
       getURL(filePath);
     } catch (error) {
       alert(error.message);
@@ -80,6 +98,7 @@ const AddPost = () => {
       } = await supabase.storage.from('blogimage').getPublicUrl(url);
 
       if (error) throw error;
+
       setImage(publicUrl);
     } catch (error) {
       alert(error.message);
@@ -117,6 +136,7 @@ const AddPost = () => {
       }
 
       if (error) throw error;
+
       navigate('/');
     } catch (error) {
       alert(error.message);
@@ -129,44 +149,65 @@ const AddPost = () => {
         <Article>
           <h2>글쓰기</h2>
 
-          <form onSubmit={addBlog}>
-            <div>
-              <label>제목</label>
-              <input
+          <WriteFormContainer onSubmit={onHandleWrite}>
+            {/* 사용자 프로필 정보 */}
+            <WriteInputField>
+              <WriteLabel>작성자</WriteLabel>
+              <UserAvatarContainer>
+                <UserAvatar>
+                  <UserAvatarImg
+                    src={user?.avatar_url || 'https://via.placeholder.com/150'}
+                    alt={user?.avatar_url || '유저 프로필'}
+                  />
+                </UserAvatar>
+                <UserAvatarTxt>
+                  {user?.username || '마이페이지에서 닉네임을 등록하세요!'}
+                  {/* {user?.email || '이메일이 없습니다.'} */}
+                </UserAvatarTxt>
+              </UserAvatarContainer>
+            </WriteInputField>
+
+            <WriteInputField>
+              <WriteLabel>제목</WriteLabel>
+              <WriteInput
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="title"
                 className="form-control"
               />
-            </div>
+            </WriteInputField>
 
-            <div>
-              <label>해시 태그</label>
-              <input
+            <WriteInputField>
+              <WriteLabel>해시 태그</WriteLabel>
+              <WriteInput
                 value={description}
                 placeholder="description"
                 onChange={(e) => setDescription(e.target.value)}
                 className="form-control"
               />
-            </div>
+            </WriteInputField>
 
-            <div>
-              <label className="form-label px-0">컨텐츠</label>
-              <textarea
+            <WriteInputField>
+              <WriteLabel>내용</WriteLabel>
+              <WriteTextarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="content"
                 className="form-control"
               />
-            </div>
+            </WriteInputField>
 
-            <div>
-              <input accept="image/*" onChange={uploadImage} type="file" className="form-control" />
-            </div>
-            <Button disabled={uploading} className="btn btn-lg btn-secondary btn-block" type="submit">
-              {uploading ? 'uploading...' : 'Add'}
-            </Button>
-          </form>
+            <WriteInputField>
+              <WriteLabel>이미지</WriteLabel>
+              <WriteInput accept="image/*" onChange={uploadImage} type="file" className="form-control" />
+            </WriteInputField>
+
+            <WriteButtonContainer>
+              <Button disabled={uploading} className="btn btn-lg btn-secondary btn-block" $blue type="submit">
+                {uploading ? 'uploading...' : 'Add'}
+              </Button>
+            </WriteButtonContainer>
+          </WriteFormContainer>
         </Article>
       </Section>
     </Layout>
