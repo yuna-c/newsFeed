@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../assets/api/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,6 @@ import {
 } from '../../styles/common';
 
 const AddPost = () => {
-  // 프로필 사진 불러오는 곳
   const { user } = useAuth();
   console.log('유저 정보 =>', user);
 
@@ -31,10 +30,34 @@ const AddPost = () => {
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [username, setUsername] = useState('');
+  const [userProfile, setUserProfile] = useState('');
 
   let navigate = useNavigate();
 
-  // 2. 이미지 업로드 함수
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('username, avatar_url')
+          .eq('id', user.id)
+          .single();
+
+        if (error) throw error;
+
+        setUsername(data.username || '');
+        setUserProfile(data.avatar_url || '');
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    if (user) {
+      fetchUserProfile();
+    }
+  }, [user]);
+
   const uploadImage = async (e) => {
     try {
       setUploading(true);
@@ -43,10 +66,10 @@ const AddPost = () => {
         throw new Error('업로드할 이미지를 선택해야 합니다');
       }
 
-      const file = e.target.files[0]; // 파일 가져오기
-      const fileExt = file.name.split('.').pop(); // 확장자 추출
-      const fileName = `${Math.random()}.${fileExt}`; // 랜덤 파일명 생성
-      const filePath = `${fileName}`; // 파일 경로 생성
+      const file = e.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
 
       let { data, error: uploadError } = await supabase.storage.from('blogimage').upload(filePath, file);
 
@@ -58,7 +81,6 @@ const AddPost = () => {
     }
   };
 
-  // 3 getUrl
   const getURL = async (url) => {
     try {
       const {
@@ -76,12 +98,17 @@ const AddPost = () => {
     }
   };
 
-  // 1. 블로그 글 올리기
   const onHandleWrite = async (e) => {
     e.preventDefault();
 
     if (!image) {
       alert('이미지 업로드가 완료될 때까지 기다려주세요.');
+      return;
+    }
+
+    // 사용자 프로필이 등록되지 않은 경우 알림 표시
+    if (!username || !userProfile) {
+      alert('프로필 정보가 부족합니다. 마이페이지에서 프로필을 등록해 주세요.');
       return;
     }
 
@@ -91,18 +118,19 @@ const AddPost = () => {
         title: title,
         description: description,
         content: content,
-        image: image // 이미지 경로 저장
+        image: image,
+        username: username,
+        user_profile: userProfile
       };
 
       let { error, data } = await supabase.from('post').insert(updates);
 
       if (error) {
         console.error('Error inserting post:', error);
+        throw error;
       } else {
         console.log('Post inserted successfully:', data);
       }
-
-      if (error) throw error;
 
       navigate('/');
     } catch (error) {
@@ -117,19 +145,17 @@ const AddPost = () => {
           <Title2>글쓰기</Title2>
 
           <WriteFormContainer onSubmit={onHandleWrite}>
-            {/* 사용자 프로필 정보 */}
             <WriteInputField>
               <WriteLabel>작성자</WriteLabel>
               <UserAvatarContainer>
                 <UserAvatar>
                   <UserAvatarImg
-                    src={user?.avatar_url || 'https://via.placeholder.com/150'}
-                    alt={user?.avatar_url || '유저 프로필'}
+                    src={userProfile || 'https://via.placeholder.com/150'}
+                    alt={username || '유저 프로필'}
                   />
                 </UserAvatar>
                 <UserAvatarTxt>
-                  {user?.username || '마이페이지에서 닉네임을 등록하세요!'}
-                  {/* {user?.email || '이메일이 없습니다.'} */}
+                  {username || '마이페이지에서 닉네임을 등록하세요!'}
                 </UserAvatarTxt>
               </UserAvatarContainer>
             </WriteInputField>
