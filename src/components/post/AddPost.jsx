@@ -1,6 +1,4 @@
-// AddPost.jsx
-
-import { useState, useEffect } from 'react'; // useEffect 추가
+import { useState } from 'react';
 import { supabase } from '../../assets/api/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -33,39 +31,10 @@ const AddPost = () => {
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [username, setUsername] = useState('');
-  const [userProfile, setUserProfile] = useState('');
 
   let navigate = useNavigate();
 
-  useEffect(() => {
-    // 사용자 정보 가져오기
-    const fetchUserProfile = async () => {
-      try {
-        // supabase에서 'profiles' 테이블에서 데이터 가져오기
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('username, avatar_url') // 가져올 필드 지정
-          .eq('id', user.id) // 현재 로그인한 사용자의 ID와 일치하는 레코드 찾기
-          .single(); // 단일 결과를 반환
-
-        if (error) throw error; // 에러 발생 시 예외 처리
-
-        // 상태 업데이트
-        setUsername(data.username); // 가져온 사용자 이름을 상태에 저장
-        setUserProfile(data.avatar_url); // 가져온 프로필 이미지를 상태에 저장
-      } catch (error) {
-        alert(error.message); // 에러 메시지 표시
-      }
-    };
-
-    // 사용자 정보가 존재할 때만 fetchUserProfile 호출
-    if (user) {
-      fetchUserProfile();
-    }
-  }, [user]); // user가 변경될 때마다 useEffect가 실행됨
-
-  // 이미지 업로드 함수
+  // 2. 이미지 업로드 함수
   const uploadImage = async (e) => {
     try {
       setUploading(true);
@@ -74,10 +43,10 @@ const AddPost = () => {
         throw new Error('업로드할 이미지를 선택해야 합니다');
       }
 
-      const file = e.target.files[0];
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const file = e.target.files[0]; // 파일 가져오기
+      const fileExt = file.name.split('.').pop(); // 확장자 추출
+      const fileName = `${Math.random()}.${fileExt}`; // 랜덤 파일명 생성
+      const filePath = `${fileName}`; // 파일 경로 생성
 
       let { data, error: uploadError } = await supabase.storage.from('blogimage').upload(filePath, file);
 
@@ -89,7 +58,7 @@ const AddPost = () => {
     }
   };
 
-  // getURL 함수
+  // 3 getUrl
   const getURL = async (url) => {
     try {
       const {
@@ -107,8 +76,8 @@ const AddPost = () => {
     }
   };
 
-  // 블로그 글 추가 함수
-  const addBlog = async (e) => {
+  // 1. 블로그 글 올리기
+  const onHandleWrite = async (e) => {
     e.preventDefault();
 
     if (!image) {
@@ -122,9 +91,7 @@ const AddPost = () => {
         title: title,
         description: description,
         content: content,
-        image: image,
-        username: username, // 사용자 이름 추가
-        user_profile: userProfile // 사용자 프로필 추가
+        image: image // 이미지 경로 저장
       };
 
       let { error, data } = await supabase.from('post').insert(updates);
@@ -147,7 +114,7 @@ const AddPost = () => {
     <Layout title={'AddPost'}>
       <Section>
         <Article>
-          <h2>글쓰기</h2>
+          <Title2>글쓰기</Title2>
 
           <WriteFormContainer onSubmit={onHandleWrite}>
             {/* 사용자 프로필 정보 */}

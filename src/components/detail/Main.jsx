@@ -13,6 +13,7 @@ import {
   PostListContainer,
   VisitMent
 } from '../../styles/main';
+import { UserAvatar, UserAvatarImg } from '../../styles/common';
 
 export default function Main() {
   const [data, setData] = useState();
@@ -52,7 +53,8 @@ export default function Main() {
     getPages();
     getUsers(); // 전체 유저 정보 가져오기
   }, []);
-
+  console.log('data', data);
+  console.log('users', users);
   return (
     <Layout title={'main'}>
       <Section>
@@ -82,7 +84,21 @@ export default function Main() {
               })
             ) : (
               <p>No blog posts available.</p>
-            )}
+            )}{' '}
+            <h2>전체 유저 목록</h2>
+            <ul>
+              {users.map((user) => (
+                <li key={user.id}>
+                  {user.username} ({user.email})
+                  <UserAvatar>
+                    <UserAvatarImg
+                      src={user?.avatar_url || 'https://via.placeholder.com/150'}
+                      alt={user?.username + `님의 프로필` || '유저 프로필'}
+                    />
+                  </UserAvatar>
+                </li>
+              ))}
+            </ul>
           </PostListContainer>
         </Article>
       </Section>
