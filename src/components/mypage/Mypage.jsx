@@ -1,57 +1,194 @@
-import { supabase } from '../../api/supabase';
+import { supabase } from '../../assets/api/supabase';
+import { useRef, useEffect, useState } from 'react';
 
-import { useState } from 'react';
 import { Section, Article } from '../../styles/layout';
-import styled from 'styled-components';
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
-
-const InputField = styled.div`
-  padding: 10px;
-  display: flex;
-  align-items: flex-end;
-  color: var(--pointColor);
-`;
-
-const Input = styled.input`
-  padding: 5px;
-  border-bottom: 1px solid #000;
-`;
+import {
+  ButtonContainer,
+  FormContainer,
+  Title2,
+  InputField,
+  Input,
+  Label,
+  CircleDiv,
+  CircleImg,
+  CircleTemp,
+  OutputText
+} from '../../styles/common.js';
 
 export default function Mypage() {
-  const onHandleSubmit = (e) => {
-    e.preventDefault();
-  };
+  const nameRef = useRef(null);
+  const passwordRef = useRef(null);
 
-  const [id, setId] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [image, setImage] = useState(localStorage.getItem('profileImage') || null); // 로컬 저장소에서 이미지 가져오기
 
-  const signUp = async (email, password) => {
-    const { data: User, error } = await supabase.auth.signUp({
-      email,
-      password
-    });
+  const [usernameOutput, setUsernameOutput] = useState('');
+  const [passwordOutput, setPasswordOutput] = useState('');
+  const [showOutput, setShowOutput] = useState(false); // 메시지 표시 상태
 
-    if (error) {
-      throw error;
+  const fileInputRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [preview, setPreview] = useState(image || null); // 초기 미리보기를 로컬 저장소에서 가져오기
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const {
+        data: { user },
+        error
+      } = await supabase.auth.getUser();
+      if (user) {
+        setUser(user);
+        if (nameRef.current) {
+          nameRef.current.value = user.user_metadata.full_name || '';
+        }
+        if (user.user_metadata.avatar_url && !preview) {
+          setPreview(user.user_metadata.avatar_url);
+          setImage(user.user_metadata.avatar_url);
+        }
+      }
+      setLoading(false);
+    };
+
+    getUserData();
+  }, [preview]);
+
+  // 이미지 파일이 선택되었을 때 처리하는 함수
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+
+      // 미리보기를 위한 파일 URL 생성
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const imageUrl = reader.result;
+        setPreview(imageUrl);
+        localStorage.setItem('profileImage', imageUrl); // 로컬 저장소에 저장
+      };
+      reader.readAsDataURL(file);
     }
-
-    return data;
   };
 
-  const onHandleSignUp = async (e) => {
+  // 이미지 클릭 시 파일 선택 창 열기
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // 이미지 업로드 함수
+  const uploadImage = async (file) => {
+    try {
+      setUploading(true);
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `profile/${fileName}`;
+
+      const { data, error: uploadError } = await supabase.storage.from('blogimage').upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      await getURL(filePath);
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // 이미지 URL 가져오기
+  const getURL = async (url) => {
+    try {
+      const {
+        data: { publicUrl },
+        error
+      } = await supabase.storage.from('blogimage').getPublicUrl(url);
+
+      if (error) throw error;
+
+      setImage(publicUrl); // 새 프로필 이미지 URL 설정
+      setPreview(publicUrl); // 미리보기 이미지 업데이트
+      localStorage.setItem('profileImage', publicUrl); // 로컬 저장소에 저장
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const onHandleUpdate = async (e) => {
     e.preventDefault();
-    setError(null);
+    setUploading(true); // 업데이트 시작 시 로딩 상태로 전환
 
     try {
-      const data = await signUp(email, password);
-      console.log('회원가입 성공:', data);
-      // 추가적인 처리 (예: 로그인 페이지로 이동)
+      const updatedName = nameRef.current.value;
+      const updatedPassword = passwordRef.current.value;
+
+      // 이미지 업로드 처리
+      if (selectedImage) {
+        await uploadImage(selectedImage);
+      }
+
+      // 이미지 업로드가 완료되지 않았을 경우 경고
+      if (!image) {
+        alert('이미지 업로드가 완료될 때까지 기다려주세요.');
+        return;
+      }
+
+      const updates = {
+        id: user.id,
+        email: user.email,
+        username: updatedName,
+        avatar_url: image,
+        updated_at: new Date()
+      };
+
+      const { error } = await supabase.from('profiles').upsert(updates);
+
+      if (error) {
+        console.error('프로필 업데이트 실패:', error);
+      } else {
+        console.log('프로필 업데이트 성공');
+        setUser((prev) => ({
+          ...prev,
+          user_metadata: {
+            ...prev.user_metadata,
+            email: user.email,
+            username: updatedName,
+            avatar_url: image
+          }
+        }));
+
+        // 유저네임과 비밀번호 화면 하단에 표시
+        setUsernameOutput(updatedName);
+        setPasswordOutput(updatedPassword);
+
+        // 메시지 표시
+        setShowOutput(true);
+
+        // 10초 후에 메시지 숨기기
+        setTimeout(() => {
+          setShowOutput(false);
+        }, 10000);
+      }
+
+      // 비밀번호 업데이트
+      if (updatedPassword) {
+        const { error: passwordError } = await supabase.auth.updateUser({
+          password: updatedPassword
+        });
+
+        if (passwordError) {
+          console.error('비밀번호 업데이트 실패:', passwordError);
+        } else {
+          console.log('비밀번호 업데이트 성공');
+        }
+      }
     } catch (error) {
-      setError(error.message);
+      console.error('업데이트 중 오류 발생:', error);
+    } finally {
+      setUploading(false); // 업데이트 완료 후 로딩 상태 해제
     }
   };
 
@@ -59,50 +196,50 @@ export default function Mypage() {
     <Layout title={'myPage'}>
       <Section>
         <Article>
-          <h2>마이 페이지</h2>
-          <form onSubmit={onHandleSignUp}>
+          <Title2>마이 페이지</Title2>
+
+          <FormContainer onSubmit={onHandleUpdate}>
             <InputField>
-              <label htmlFor="id" style={{ width: '80px', display: 'inline-block' }}>
-                아이디 :
-              </label>
-              <Input type="text" id="id" value={id} placeholder="id" onChange={(e) => setId(e.target.value)} />
-            </InputField>
-            <InputField>
-              <label htmlFor="password" style={{ width: '80px', display: 'inline-block' }}>
-                비밀번호 :
-              </label>
-              <Input
-                type="text"
-                id="password"
-                value={password}
-                placeholder="password"
-                onChange={(e) => setPassword(e.target.value)}
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleImageChange}
               />
+              <CircleDiv onClick={handleImageClick}>
+                {preview ? <CircleImg src={preview} alt="Profile Preview" /> : <CircleTemp>Click to upload</CircleTemp>}
+              </CircleDiv>
             </InputField>
             <InputField>
-              <label htmlFor="email" style={{ width: '80px', display: 'inline-block' }}>
-                이메일 :
-              </label>
-              <Input
-                type="email"
-                id="email"
-                value={email}
-                placeholder="email"
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <Label htmlFor="email">이메일 :</Label>
+              <Input type="email" id="email" placeholder="email" value={user ? `${user.email}` : ''} readOnly />
             </InputField>
             <InputField>
-              <label htmlFor="name" style={{ width: '80px', display: 'inline-block' }}>
-                이름 :
-              </label>
-              <Input type="name" id="name" value={name} placeholder="name" onChange={(e) => setName(e.target.value)} />
+              <Label htmlFor="name">이름 :</Label>
+              <Input type="text" id="name" placeholder="name" ref={nameRef} />
             </InputField>
-            <div className="button-group">
-              <Button>회원가입</Button>
-            </div>
-          </form>
+            <InputField>
+              <Label htmlFor="password">비밀번호 :</Label>
+              <Input type="password" id="password" placeholder="password" ref={passwordRef} />
+            </InputField>
+
+            <ButtonContainer className="button-group">
+              <Button type="submit" disabled={uploading}>
+                {uploading ? '업로드 중...' : '업데이트'}
+              </Button>
+            </ButtonContainer>
+          </FormContainer>
         </Article>
       </Section>
+
+      {showOutput && (
+        <OutputText>
+          Updated Username: {usernameOutput} | Updated Profile Image:
+          <img src={image} alt="Updated Profile" style={{ width: '50px', borderRadius: '50%' }} /> | Updated Password:{' '}
+          {passwordOutput}
+        </OutputText>
+      )}
     </Layout>
   );
 }

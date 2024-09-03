@@ -1,15 +1,27 @@
-import { useRef, useState } from 'react';
-import { supabase } from '../../api/supabase';
-import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
+import { supabase } from '../../assets/api/supabase';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Editor } from '@toast-ui/react-editor';
 
-import { Section, Article } from '../../styles/layout';
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
+import { Section, Article } from '../../styles/layout';
+import {
+  Title2,
+  WriteFormContainer,
+  WirteInputField,
+  WirteLabel,
+  WirteInput,
+  WirteTextarea,
+  ButtonContainer,
+  WirteButtonContainer
+} from '../../styles/common';
 
 const AddPost = () => {
-  const editorRef = useRef(null);
+  const { user } = useAuth();
+  // user정보
+  console.log(user.id, user.email, user.password);
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
@@ -34,11 +46,10 @@ const AddPost = () => {
 
       let { data, error: uploadError } = await supabase.storage.from('blogimage').upload(filePath, file);
       // console.log(supabase.storage.from('image').getPublicUrl(url).data.publicUrl)
-      console.log(data);
 
       if (uploadError) throw uploadError;
-
-      console.log(data); // 이미지 경로 저장
+      // 이미지 경로 저장
+      console.log(`data=>`, data);
       getURL(filePath);
     } catch (error) {
       alert(error.message);
@@ -54,8 +65,8 @@ const AddPost = () => {
       } = await supabase.storage.from('blogimage').getPublicUrl(url);
 
       if (error) throw error;
-
-      setImage(publicUrl); // 이미지 URL 설정
+      // 이미지 URL 설정
+      setImage(publicUrl);
     } catch (error) {
       alert(error.message);
     } finally {
@@ -64,7 +75,7 @@ const AddPost = () => {
   };
 
   // 1. 블로그 글 올리기
-  const addBlog = async (e) => {
+  const onHandleWrite = async (e) => {
     e.preventDefault();
 
     // 이미지 업로드가 완료되지 않았을 경우 경고
@@ -75,27 +86,27 @@ const AddPost = () => {
 
     try {
       const updates = {
-        id: uuidv4(),
+        user_id: user.id,
         title: title,
         description: description,
         content: content,
         image: image // 이미지 경로 저장
       };
 
-      let { error } = await supabase.from('post').insert(updates);
+      // let { error } = await supabase.from('post').insert(updates);
+      let { error, data } = await supabase.from('post').insert(updates);
+
+      if (error) {
+        console.error('Error inserting post:', error);
+      } else {
+        console.log('Post inserted successfully:', data);
+      }
 
       if (error) throw error;
-
-      navigate('/'); // 업로드 후 메인 페이지로 이동
+      // 업로드 후 메인 페이지로 이동
+      navigate('/');
     } catch (error) {
       alert(error.message);
-    }
-  };
-
-  // 에디터 내용 변경 시 호출
-  const handleEditorChange = () => {
-    if (editorRef.current) {
-      setContent(editorRef.current.getInstance().getMarkdown());
     }
   };
 
@@ -103,66 +114,50 @@ const AddPost = () => {
     <Layout title={'AddPost'}>
       <Section>
         <Article>
-          <h2>글쓰기 </h2>
+          <Title2>글쓰기</Title2>
 
-          <br />
-
-          <form onSubmit={addBlog}>
-            <div>
-              <label>제목</label>
-              <input
+          <WriteFormContainer onSubmit={onHandleWrite}>
+            <WirteInputField>
+              <WirteLabel>제목</WirteLabel>
+              <WirteInput
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="title"
                 className="form-control"
               />
-            </div>
+            </WirteInputField>
 
-            <div>
-              <label>해시 태그</label>
-              <input
+            <WirteInputField>
+              <WirteLabel>해시 태그</WirteLabel>
+              <WirteInput
                 value={description}
                 placeholder="description"
                 onChange={(e) => setDescription(e.target.value)}
                 className="form-control"
               />
-            </div>
+            </WirteInputField>
 
-            <div>
-              <label className="form-label px-0">컨텐츠</label>
-              <textarea
+            <WirteInputField>
+              <WirteLabel>컨텐츠</WirteLabel>
+              <WirteTextarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="content"
                 className="form-control"
               />
-            </div>
+            </WirteInputField>
 
-            <div>
-              <label>Post content</label>
-              <Editor
-                ref={editorRef}
-                initialEditType="markdown"
-                previewStyle="vertical"
-                height="400px"
-                initialValue="Hello, TOAST UI Editor!"
-                onChange={handleEditorChange}
-              />
-            </div>
+            <WirteInputField>
+              <WirteLabel></WirteLabel>
+              <WirteInput accept="image/*" onChange={uploadImage} type="file" className="form-control" />
+            </WirteInputField>
 
-            <div>
-              {/* <label>이미지</label> */}
-              <input accept="image/*" onChange={uploadImage} type="file" className="form-control" />
-            </div>
-            <Button
-              // onClick={() => addBlog({ title, description, content, image })}
-              disabled={uploading}
-              className="btn btn-lg btn-secondary btn-block"
-              type="submit"
-            >
-              {uploading ? 'uploading...' : 'Add'}
-            </Button>
-          </form>
+            <WirteButtonContainer>
+              <Button disabled={uploading} className="btn btn-lg btn-secondary btn-block" $blue type="submit">
+                {uploading ? 'uploading...' : 'Add'}
+              </Button>
+            </WirteButtonContainer>
+          </WriteFormContainer>
         </Article>
       </Section>
     </Layout>

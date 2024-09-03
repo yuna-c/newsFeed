@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '../api/supabase';
+import { supabase } from '../assets/api/supabase';
 
 const AuthContext = createContext();
 
@@ -21,18 +21,26 @@ export function AuthProvider({ children }) {
       if (error) {
         console.error('세션 가져오기 오류:', error);
       } else {
-        // console.log('Session:', session)
         setUser(session?.user ?? null);
       }
+
+      // const currentUser = supabase.auth.user;
+      // if (!session && currentUser) {
+      //   setUser(currentUser);
+      // }
 
       setLoading(false);
     };
 
     getUserSession();
 
-    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       // console.log('인증상태 변경됨:', event, session)
       setUser(session?.user ?? null);
+      // if (session) {
+      //   console.log(session.user.email);
+      //   console.log(session);
+      // }
       setLoading(false);
     });
 
@@ -68,44 +76,10 @@ export function AuthProvider({ children }) {
       if (error) {
         console.error('로그아웃 오류:', error);
       } else {
-        alert('로그아웃 완료');
-        setUser(null); // 로그아웃 후 사용자 상태를 null로 재설정
+        setUser(null);
       }
     },
-    // 구현 미완료
-    deleteUser: async () => {
-      if (!user) {
-        console.error('삭제할 사용자가 없습니다.');
-        return;
-      }
 
-      try {
-        // 백엔드로 삭제 요청 보내기
-        const response = await fetch('/api/deleteUser', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ userId: user.id })
-        });
-
-        if (!response.ok) {
-          throw new Error('회원탈퇴 요청이 실패했습니다.');
-        }
-
-        alert('회원탈퇴 완료');
-        setUser(null); // 계정 삭제 후 사용자 상태를 null로 재설정
-
-        // 로그아웃 처리
-        const { error: signOutError } = await supabase.auth.signOut();
-        if (signOutError) {
-          console.error('로그아웃 오류:', signOutError);
-        }
-      } catch (error) {
-        // 지금 상태
-        console.error('회원탈퇴 오류:', error);
-      }
-    },
     user
   };
 
