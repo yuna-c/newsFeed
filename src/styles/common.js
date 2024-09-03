@@ -220,6 +220,7 @@ export const UserAvatar = styled.span`
   width: 40px;
   height: 40px;
   border: 1px solid #ddd;
+  display: inline-block;
   overflow: hidden;
 `;
 
