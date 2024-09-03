@@ -1,3 +1,4 @@
+import { supabase } from '../../assets/api/supabase';
 import { useState, useEffect } from 'react';
 
 import { Section, Article } from '../../styles/layout';
@@ -37,22 +38,24 @@ export default function Main() {
     <Layout title={'main'}>
       <Section>
         <Article>
-          <h2>메인 페이지</h2>
-
-          {data ? (
-            data.map((post) => {
-              return (
-                <div key={post.id}>
-                  <div className="post-preview">
+          <VisitMent>
+            <h2>방문해주셔서 감사합니다! 여러분의 하루를 공유해주세요!</h2>
+          </VisitMent>
+          <PostListContainer>
+            {data ? (
+              data.map((post) => {
+                console.log(post.image);
+                return (
+                  <PostCardContainer key={post.id}>
                     <Link to={`/singlepost/${post.id}`}>
                       <PostCardProfile>
-                        <p>작성자:{post.user_name}</p>
+                        <p>작성자:{post.username}</p>
                       </PostCardProfile>
                       <PostContent>
                         {' '}
                         <h2 className="post-title">제목:{post.title}</h2>
                       </PostContent>
-                      <h3 className="post-subtitle">내용:{post.description}</h3>
+                      <h3 className="post-subtitle">내용:{post.content}</h3>
                       <PostImg src={post.image} alt={post.title} />
                     </Link>
                   </PostCardContainer>
