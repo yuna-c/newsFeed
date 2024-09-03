@@ -5,7 +5,7 @@ import { Section, Article } from '../../styles/layout';
 import { Link } from 'react-router-dom';
 
 import Layout from '../layout/Layout';
-import { ColorText, Title, UserAvatarImg, UserAvatarSmall } from '../../styles/common';
+import { ColorText, NonData, Title, UserAvatarImg, UserAvatarSmall } from '../../styles/common';
 import {
   PostCardContainer,
   PostListContainer,
@@ -15,7 +15,7 @@ import {
   PostText,
   PostUserInfo,
   HashText,
-  HashDiv
+  HashContainer
 } from '../../styles/main';
 
 export default function Main() {
@@ -78,7 +78,7 @@ export default function Main() {
                 const hashtags = post.description.split('#').filter((tag) => tag.trim() !== '');
                 return (
                   <PostCardContainer key={post.id}>
-                    <Link to={`/singlepost/${post.id}`}>
+                    <Link to={`/detail/${post.id}`}>
                       <PostCardProfile>
                         <PostUserInfo>
                           <UserAvatarSmall>
@@ -98,17 +98,17 @@ export default function Main() {
                       </PostContent>
 
                       <PostImg src={post.image} alt={post.title} />
-                      <HashDiv>
+                      <HashContainer>
                         {hashtags.map((tag, index) => (
                           <HashText key={index}>#{tag.trim()}</HashText>
                         ))}
-                      </HashDiv>
+                      </HashContainer>
                     </Link>
                   </PostCardContainer>
                 );
               })
             ) : (
-              <p>포스팅 글이 없습니다. </p>
+              <NonData>포스팅 글이 없습니다. </NonData>
             )}
           </PostListContainer>
         </Article>

@@ -81,7 +81,7 @@ export const PostUserInfo = styled.div`
 export const PostText = styled.p``;
 
 // 해시태그
-export const HashDiv = styled.div`
+export const HashContainer = styled.div`
   padding: 10px;
   display: flex;
   gap: 10px;
@@ -109,7 +109,7 @@ export const PostContent = styled.div`
 
 export const PostImg = styled.img`
   width: 100%;
-  height: auto;
+  height: 400px;
   object-fit: cover;
 `;
 

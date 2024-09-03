@@ -15,7 +15,7 @@ import {
   PostText,
   PostUserInfo,
   HashText,
-  HashDiv
+  HashContainer
 } from '../../styles/main';
 
 export default function MyPost() {
@@ -72,7 +72,6 @@ export default function MyPost() {
             ) : data && data.length > 0 ? (
               data.map((post) => {
                 console.log(post.user_id);
-                // console.log(`프로필 정보 =>`, post);
                 const username = post.username
                   ? post.username.includes('@')
                     ? post.username.split('@')[0]
@@ -81,7 +80,7 @@ export default function MyPost() {
                 const hashtags = post.description.split('#').filter((tag) => tag.trim() !== '');
                 return (
                   <PostCardContainer key={post.id}>
-                    <Link to={`/singlepost/${post.id}`}>
+                    <Link to={`/detail/${post.id}`}>
                       <PostCardProfile>
                         <PostUserInfo>
                           <UserAvatarSmall>
@@ -101,11 +100,11 @@ export default function MyPost() {
                       </PostContent>
 
                       <PostImg src={post.image} alt={post.title} />
-                      <HashDiv>
+                      <HashContainer>
                         {hashtags.map((tag, index) => (
                           <HashText key={index}>#{tag.trim()}</HashText>
                         ))}
-                      </HashDiv>
+                      </HashContainer>
                     </Link>
                   </PostCardContainer>
                 );

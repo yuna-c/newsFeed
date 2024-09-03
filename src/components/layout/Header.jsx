@@ -1,11 +1,11 @@
 import Nav from './Nav';
 
-import { HeaderDiv } from '../../styles/layout';
+import { HeaderContainer } from '../../styles/layout';
 
 export default function Header() {
   return (
-    <HeaderDiv className="Header">
+    <HeaderContainer className="Header">
       <Nav />
-    </HeaderDiv>
+    </HeaderContainer>
   );
 }

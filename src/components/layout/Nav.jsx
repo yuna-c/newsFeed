@@ -1,8 +1,9 @@
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { LogoDiv, NavDiv } from '../../styles/layout';
+import { LogoContainer, LogoImg, NavContainer } from '../../styles/layout';
 
 import { ColorText } from '../../styles/common';
+import logo from '../../assets/images/logo.png';
 
 export default function Nav() {
   const { user, signOut } = useAuth();
@@ -16,11 +17,13 @@ export default function Nav() {
 
   return (
     <>
-      <LogoDiv>
-        <Link to="/">홈 로고</Link>
-      </LogoDiv>
+      <LogoContainer>
+        <Link to="/">
+          <LogoImg src={logo} alt="Logo" /> 짤 저장소
+        </Link>
+      </LogoContainer>
 
-      <NavDiv className="Nav">
+      <NavContainer className="Nav">
         <li>
           <Link to="/">전체</Link>
         </li>
@@ -55,7 +58,7 @@ export default function Nav() {
             </li>
           </>
         )}
-      </NavDiv>
+      </NavContainer>
     </>
   );
 }

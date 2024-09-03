@@ -12,7 +12,7 @@ import {
   InputField,
   Input,
   Label,
-  CircleDiv,
+  CircleContainer,
   CircleImg,
   CircleTemp,
   OutputText,
@@ -207,9 +207,9 @@ export default function Mypage() {
                 style={{ display: 'none' }}
                 onChange={handleImageChange}
               />
-              <CircleDiv onClick={handleImageClick}>
+              <CircleContainer onClick={handleImageClick}>
                 {preview ? <CircleImg src={preview} alt="Profile Preview" /> : <CircleTemp>Click to upload</CircleTemp>}
-              </CircleDiv>
+              </CircleContainer>
             </InputField>
             <InputField>
               <Label htmlFor="email">이메일 :</Label>

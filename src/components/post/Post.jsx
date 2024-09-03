@@ -129,7 +129,7 @@ export default function Post() {
   };
 
   return (
-    <Layout title={'AddPost'}>
+    <Layout title={'Post'}>
       <Section>
         <Article>
           <Title>글쓰기</Title>
