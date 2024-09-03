@@ -10,6 +10,7 @@ import Detail from '../components/detail/Detail';
 import Write from '../components/WritePage/Write';
 import AddPost from '../components/post/AddPost';
 import SinglePost from '../components/detail/SinglePost';
+import UpdatePost from '../components/detail/updatePost';
 
 import AuthRoute from './AuthRouter';
 import UnauthRoute from './UnauthRoute';
@@ -31,6 +32,7 @@ export default function Router() {
             <Route path="/write" element={<Write />} />
             <Route path="/addpost" element={<AddPost />} />
             <Route path="/singlepost/:id" element={<SinglePost />} />
+            <Route path="/updatePost/:id" element={<UpdatePost />} />
           </Route>
         </Routes>
         <Footer />
