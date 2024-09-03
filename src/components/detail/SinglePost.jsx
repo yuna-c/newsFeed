@@ -166,7 +166,7 @@ const SinglePost = () => {
 
   // 게시글 수정 페이지로 이동
   const handlePostUpdate = () => {
-    navigate(`/addpost`);
+    navigate(`/updatePost/${id}`);
   };
 
   return (
