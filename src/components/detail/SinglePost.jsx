@@ -48,7 +48,7 @@ const SinglePost = () => {
       }
 
       alert('포스트가 성공적으로 삭제되었습니다.');
-      // navigate('/'); // 메인 페이지로 이동 후 데이터를 다시 로드하게 됩니다.
+      // navigate('/'); // 메인 페이지로 이동 후 데이터를 다시 로드
     } catch (error) {
       console.error('삭제 중 오류 발생:', error.message);
     }

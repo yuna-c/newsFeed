@@ -1,4 +1,5 @@
 import { useAuth } from '../../context/AuthContext';
+import { supabase } from '../../assets/api/supabase.js';
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -56,16 +57,10 @@ const SignUp = () => {
       return;
     }
 
-    // 인풋값들 콘솔로 출력
-    // console.log('이메일:', email);
-    // console.log('비밀번호:', password);
-    // console.log('비밀번호 확인:', confirmPassword);
-
-    // 콘솔에 프로필 데이터 출력
-    // console.log('회원가입 성공, 프로필 정보:', data);
-
-    // 회원가입 후 로그아웃 처리 및 로그인 페이지로 이동
+    // 회원가입 후 로그아웃은 되나 로그아웃 alert이 뜨고 메인페이지로 이동
     await signOut();
+    await supabase.auth.signOut();
+
     navigate('/signin');
   };
 

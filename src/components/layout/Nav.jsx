@@ -22,7 +22,7 @@ const Nav = () => {
 
       <NavDiv className="Nav">
         <li>
-          <Link to="/">전체 글</Link>
+          <Link to="/">전체</Link>
         </li>
         {user ? (
           <>
@@ -30,10 +30,10 @@ const Nav = () => {
               <Link to="/mypage">마이페이지</Link>
             </li>
             <li>
-              <Link to="/addpost">글쓰기</Link>
+              <Link to="/detail">작성글</Link>
             </li>
             <li>
-              <Link to="/detail">detail</Link>
+              <Link to="/addpost">글쓰기</Link>
             </li>
             <li>
               <Link to="/" onClick={handleSignout}>
@@ -41,13 +41,13 @@ const Nav = () => {
               </Link>
             </li>
             <li>
-              <ColorText $red>{user.email.split('@')[0]}</ColorText> 님 환영합니다
+              <ColorText $red>{user?.username || user.email.split('@')[0]}</ColorText> 님 환영합니다
             </li>
           </>
         ) : (
           <>
             <li>
-              <Link to="/addpost">글쓰기</Link>
+              <Link to="/addpost">접근제한</Link>
             </li>
             <li>
               <Link to="/signin">로그인</Link>
