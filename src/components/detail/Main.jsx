@@ -1,10 +1,18 @@
-import { useState, useEffect } from 'react';
 import { supabase } from '../../assets/api/supabase';
+import { useState, useEffect } from 'react';
+
+import { Section, Article } from '../../styles/layout';
 import { Link } from 'react-router-dom';
 
 import Layout from '../layout/Layout';
-
-import { Section, Article } from '../../styles/layout';
+import {
+  PostCardContainer,
+  PostCardProfile,
+  PostContent,
+  PostImg,
+  PostListContainer,
+  VisitMent
+} from '../../styles/main';
 import { UserAvatar, UserAvatarImg } from '../../styles/common';
 
 export default function Main() {
@@ -45,45 +53,53 @@ export default function Main() {
     getPages();
     getUsers(); // 전체 유저 정보 가져오기
   }, []);
-
+  console.log('data', data);
+  console.log('users', users);
   return (
     <Layout title={'main'}>
       <Section>
         <Article>
-          <h2>메인 페이지</h2>
-
-          {data ? (
-            data.map((post) => {
-              return (
-                <div key={post.id}>
-                  <div className="post-preview">
+          <VisitMent>
+            <h2>방문해주셔서 감사합니다! 여러분의 하루를 공유해주세요!</h2>
+          </VisitMent>
+          <PostListContainer>
+            {data ? (
+              data.map((post) => {
+                console.log(post.image);
+                return (
+                  <PostCardContainer key={post.id}>
                     <Link to={`/singlepost/${post.id}`}>
-                      <h2 className="post-title">{post.title}</h2>
-                      <h3 className="post-subtitle">{post.description}</h3>
+                      <PostCardProfile>
+                        <p>작성자:{post.username}</p>
+                      </PostCardProfile>
+                      <PostContent>
+                        {' '}
+                        <h2 className="post-title">제목:{post.title}</h2>
+                      </PostContent>
+                      <h3 className="post-subtitle">내용:{post.content}</h3>
+                      <PostImg src={post.image} alt={post.title} />
                     </Link>
-                  </div>
-                  <hr />
-                </div>
-              );
-            })
-          ) : (
-            <p>포스팅 글이 없습니다</p>
-          )}
-
-          <h2>전체 유저 목록</h2>
-          <ul>
-            {users.map((user) => (
-              <li key={user.id}>
-                {user.username} ({user.email})
-                <UserAvatar>
-                  <UserAvatarImg
-                    src={user?.avatar_url || 'https://via.placeholder.com/150'}
-                    alt={user?.username + `님의 프로필` || '유저 프로필'}
-                  />
-                </UserAvatar>
-              </li>
-            ))}
-          </ul>
+                  </PostCardContainer>
+                );
+              })
+            ) : (
+              <p>No blog posts available.</p>
+            )}{' '}
+            <h2>전체 유저 목록</h2>
+            <ul>
+              {users.map((user) => (
+                <li key={user.id}>
+                  {user.username} ({user.email})
+                  <UserAvatar>
+                    <UserAvatarImg
+                      src={user?.avatar_url || 'https://via.placeholder.com/150'}
+                      alt={user?.username + `님의 프로필` || '유저 프로필'}
+                    />
+                  </UserAvatar>
+                </li>
+              ))}
+            </ul>
+          </PostListContainer>
         </Article>
       </Section>
     </Layout>

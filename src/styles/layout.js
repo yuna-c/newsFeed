@@ -13,12 +13,10 @@ export const Wrap = styled.div`
     padding: 1.2rem;
   }
 `;
-
 export const Main = styled.main`
   min-height: calc(100vh - 9.5rem);
   position: relative;
 `;
-
 export const Aside = styled.aside`
   border: 1px solid orange;
 `;
@@ -38,7 +36,6 @@ export const HeaderDiv = styled.header`
   display: flex;
   justify-content: space-between;
 `;
-
 export const FooterDiv = styled.footer`
   background-color: #ddd;
   border-top: 1px solid #ddd;
