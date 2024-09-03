@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const AuthRoute = ({ children }) => {
+export default function AuthRoute({ children }) {
   const { user } = useAuth();
 
   // 로그인한 사용자가 아니라면 로그인 페이지로 리다이렉트
@@ -11,6 +11,4 @@ const AuthRoute = ({ children }) => {
   }
 
   return children ? children : <Outlet />;
-};
-
-export default AuthRoute;
+}

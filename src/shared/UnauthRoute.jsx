@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const UnauthRoute = ({ children }) => {
+export default function UnauthRoute({ children }) {
   const { user } = useAuth();
 
   // 로그인한 사용자라면 메인 페이지로 리다이렉트
@@ -11,6 +11,4 @@ const UnauthRoute = ({ children }) => {
   }
 
   return children ? children : <Outlet />;
-};
-
-export default UnauthRoute;
+}

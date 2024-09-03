@@ -19,7 +19,7 @@ import {
   UserAvatarImg
 } from '../../styles/common';
 
-const Post = () => {
+export default function Post() {
   const { user } = useAuth();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -193,6 +193,4 @@ const Post = () => {
       </Section>
     </Layout>
   );
-};
-
-export default Post;
+}

@@ -8,7 +8,7 @@ import Button from './../common/Button';
 import { Section, Article } from '../../styles/layout';
 import { ButtonContainer, FormContainer, Title, InputField, Input, Label } from '../../styles/common.js';
 
-const SignIn = () => {
+export default function SignIn() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const [error, setError] = useState(null);
@@ -73,6 +73,4 @@ const SignIn = () => {
       </Section>
     </Layout>
   );
-};
-
-export default SignIn;
+}

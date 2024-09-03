@@ -9,7 +9,7 @@ import Button from './../common/Button';
 import { Section, Article } from '../../styles/layout';
 import { ButtonContainer, FormContainer, Title, InputField, Input, Label } from '../../styles/common.js';
 
-const SignUp = () => {
+export default function SignUp() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
@@ -104,6 +104,4 @@ const SignUp = () => {
       </Section>
     </Layout>
   );
-};
-
-export default SignUp;
+}

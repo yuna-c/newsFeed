@@ -4,7 +4,7 @@ import { LogoDiv, NavDiv } from '../../styles/layout';
 
 import { ColorText } from '../../styles/common';
 
-const Nav = () => {
+export default function Nav() {
   const { user, signOut } = useAuth();
   let navigate = useNavigate();
 
@@ -27,13 +27,13 @@ const Nav = () => {
         {user ? (
           <>
             <li>
-              <Link to="/mypage">마이페이지</Link>
-            </li>
-            <li>
-              <Link to="/detail">작성글</Link>
+              <Link to="/mypost">작성글</Link>
             </li>
             <li>
               <Link to="/post">글쓰기</Link>
+            </li>
+            <li>
+              <Link to="/mypage">마이페이지</Link>
             </li>
             <li>
               <Link to="/" onClick={handleSignout}>
@@ -46,9 +46,7 @@ const Nav = () => {
           </>
         ) : (
           <>
-            <li>
-              <Link to="/post">접근제한</Link>
-            </li>
+            {/* <li><Link to="/post">접근제한 테스트</Link></li> */}
             <li>
               <Link to="/signin">로그인</Link>
             </li>
@@ -60,6 +58,4 @@ const Nav = () => {
       </NavDiv>
     </>
   );
-};
-
-export default Nav;
+}

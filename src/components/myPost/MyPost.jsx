@@ -18,58 +18,61 @@ import {
   HashDiv
 } from '../../styles/main';
 
-export default function Main() {
+export default function MyPost() {
   const [data, setData] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getPages = async () => {
+    const getMyPosts = async () => {
       try {
-        let { data, error, status } = await supabase.from('post').select('*');
+        // 현재 로그인한 사용자 정보 가져오기
+        const {
+          data: { user },
+          error
+        } = await supabase.auth.getUser();
 
-        if (error && status !== 406) {
-          console.log('error', error);
-          throw error;
+        if (error) {
+          console.error('사용자 정보를 가져오는 중 오류 발생:', error);
+          return;
+        }
+
+        if (!user || !user.id) {
+          console.error('사용자가 로그인되지 않았습니다.');
+          return;
+        }
+
+        // 해당 사용자의 작성글만 가져오기
+        let { data, error: postError, status } = await supabase.from('post').select('*').eq('user_id', user.id); // user_id가 현재 로그인한 사용자의 ID와 같은지 확인
+
+        if (postError && status !== 406) {
+          console.log('error', postError);
+          throw postError;
         }
 
         setData(data);
       } catch (error) {
-        console.log(error.message);
+        console.log('포스팅 데이터를 가져오는 중 오류 발생:', error.message);
+      } finally {
+        setLoading(false);
       }
     };
-    getPages();
+
+    getMyPosts();
   }, []);
 
-  // 유저 정보를 저장할 상태 추가
-  // const [users, setUsers] = useState([]);
-
-  // 개인 프로필 가져오기
-  // const getUsers = async () => {
-  //   try {
-  //     let { data, error, status } = await supabase.from('profiles').select('*');
-  //     if (error && status !== 406) {
-  //       console.log('error', error);
-  //       throw error;
-  //     }
-  //     setUsers(data);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
-  //getUsers();
-
-  // console.log('유저 데이터 Post =>', data);
-  // console.log('프로필 데이터 Profile =>', users);
-
   return (
-    <Layout title={'main'}>
+    <Layout title={'MyPost'}>
       <Section>
         <Article>
-          <Title>짤 포스트</Title>
+          <Title>내 작성글</Title>
 
           <PostListContainer>
-            {data ? (
+            {loading ? (
+              <p>로딩 중...</p>
+            ) : data && data.length > 0 ? (
               data.map((post) => {
-                console.log(`프로필 정보 =>`, post);
+                console.log(post.user_id);
+                // console.log(`프로필 정보 =>`, post);
                 const username = post.username
                   ? post.username.includes('@')
                     ? post.username.split('@')[0]

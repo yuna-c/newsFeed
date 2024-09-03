@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Main from '../components/detail/Main';
+import Main from '../components/main/Main';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import SignIn from '../components/auth/SignIn';
 import SignUp from '../components/auth/SignUp';
 import MyPage from '../components/mypage/Mypage';
-import Detail from '../components/detail/Detail';
 import Post from '../components/post/Post';
+import MyPost from '../components/myPost/MyPost';
 import SinglePost from '../components/detail/SinglePost';
 import UpdatePost from '../components/detail/updatePost';
 
@@ -27,7 +27,7 @@ export default function Router() {
           </Route>
           <Route element={<AuthRoute />}>
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/detail" element={<Detail />} />
+            <Route path="/mypost" element={<MyPost />} />
             <Route path="/post" element={<Post />} />
             <Route path="/singlepost/:id" element={<SinglePost />} />
             <Route path="/updatePost/:id" element={<UpdatePost />} />

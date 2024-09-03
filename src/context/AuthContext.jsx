@@ -93,7 +93,7 @@ export function AuthProvider({ children }) {
         console.error('로그아웃 오류:', error);
       } else {
         setUser(null);
-        alert('로그아웃');
+        console.log('로그아웃');
       }
     },
 
