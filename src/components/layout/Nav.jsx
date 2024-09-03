@@ -33,7 +33,7 @@ const Nav = () => {
               <Link to="/detail">작성글</Link>
             </li>
             <li>
-              <Link to="/addpost">글쓰기</Link>
+              <Link to="/post">글쓰기</Link>
             </li>
             <li>
               <Link to="/" onClick={handleSignout}>
@@ -47,7 +47,7 @@ const Nav = () => {
         ) : (
           <>
             <li>
-              <Link to="/addpost">접근제한</Link>
+              <Link to="/post">접근제한</Link>
             </li>
             <li>
               <Link to="/signin">로그인</Link>

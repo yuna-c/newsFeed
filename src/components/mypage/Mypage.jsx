@@ -8,14 +8,17 @@ import { Section, Article } from '../../styles/layout';
 import {
   ButtonContainer,
   FormContainer,
-  Title2,
+  Title,
   InputField,
   Input,
   Label,
   CircleDiv,
   CircleImg,
   CircleTemp,
-  OutputText
+  OutputText,
+  UserAvatarImg,
+  UserAvatarSmall,
+  InfoText
 } from '../../styles/common.js';
 
 export default function Mypage() {
@@ -169,9 +172,9 @@ export default function Mypage() {
         setShowOutput(true);
 
         // 10초 후에 메시지 숨기기
-        setTimeout(() => {
-          setShowOutput(false);
-        }, 10000);
+        // setTimeout(() => {
+        //   setShowOutput(false);
+        // }, 10000);
       }
 
       // 비밀번호 업데이트
@@ -197,7 +200,7 @@ export default function Mypage() {
     <Layout title={'myPage'}>
       <Section>
         <Article>
-          <Title2>마이 페이지</Title2>
+          <Title>마이 페이지</Title>
 
           <FormContainer onSubmit={onHandleUpdate}>
             <InputField>
@@ -236,9 +239,11 @@ export default function Mypage() {
 
       {showOutput && (
         <OutputText>
-          Updated Username: {usernameOutput} | Updated Profile Image:
-          <img src={image} alt="Updated Profile" style={{ width: '50px', borderRadius: '50%' }} /> | Updated Password:{' '}
-          {passwordOutput}
+          <InfoText>닉네임 : {usernameOutput}</InfoText>
+          <InfoText>비밀번호 : {passwordOutput}</InfoText>
+          <UserAvatarSmall style={{ marginTop: '1px' }}>
+            <UserAvatarImg src={image} alt="Updated Profile" />
+          </UserAvatarSmall>
         </OutputText>
       )}
     </Layout>

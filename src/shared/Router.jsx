@@ -7,7 +7,7 @@ import SignIn from '../components/auth/SignIn';
 import SignUp from '../components/auth/SignUp';
 import MyPage from '../components/mypage/Mypage';
 import Detail from '../components/detail/Detail';
-import AddPost from '../components/post/AddPost';
+import Post from '../components/post/Post';
 import SinglePost from '../components/detail/SinglePost';
 
 import AuthRoute from './AuthRouter';
@@ -27,7 +27,7 @@ export default function Router() {
           <Route element={<AuthRoute />}>
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/detail" element={<Detail />} />
-            <Route path="/addpost" element={<AddPost />} />
+            <Route path="/post" element={<Post />} />
             <Route path="/singlepost/:id" element={<SinglePost />} />
           </Route>
         </Routes>

@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 
 // 타이틀
-export const Title2 = styled.h2`
+export const Title = styled.h2`
   font-size: 1.8rem;
 `;
 
@@ -179,6 +179,7 @@ export const CircleTemp = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   font-size: 0.8rem;
   color: #fff;
   border: 1px solid #ddd;
@@ -187,17 +188,37 @@ export const CircleTemp = styled.div`
 `;
 
 export const OutputText = styled.div`
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
   text-align: center;
-  background-color: #a39c9c;
+  background-color: #aeaaaabf;
   color: white;
-  padding: 10px;
   font-size: 1rem;
   transition: 2s ease-in-out;
+`;
+
+export const InfoText = styled.div`
+  position: relative;
+  margin-right: 20px;
+  font-weight: bold;
+
+  &::after {
+    content: '|';
+    position: absolute;
+    right: -15px;
+    color: #fff;
+  }
+
+  /* &:last-of-type::after {
+    content: '';
+  } */
 `;
 
 export const ProfileImage = styled.img`
@@ -224,12 +245,23 @@ export const UserAvatar = styled.span`
   overflow: hidden;
 `;
 
+export const UserAvatarSmall = styled.span`
+  width: 30px;
+  height: 30px;
+  padding: 0 !important;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  display: inline-block;
+  overflow: hidden;
+`;
+
 export const UserAvatarImg = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   cursor: pointer;
 `;
+
 export const UserAvatarTxt = styled.span`
   font-size: 1.2rem;
 `;

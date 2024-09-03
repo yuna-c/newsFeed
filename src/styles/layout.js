@@ -51,7 +51,6 @@ export const NavDiv = styled.ul`
 `;
 
 export const LogoDiv = styled.div`
-  border: 1px solid red;
   margin: 10px;
   display: flex;
 `;

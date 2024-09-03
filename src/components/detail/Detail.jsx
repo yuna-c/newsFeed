@@ -3,10 +3,10 @@ import Comment from './Comment';
 
 function Detail() {
   return (
-    <content>
+    <>
       <Post />
       <Comment />
-    </content>
+    </>
   );
 }
 

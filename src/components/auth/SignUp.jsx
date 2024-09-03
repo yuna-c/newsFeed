@@ -7,7 +7,7 @@ import Layout from '../layout/Layout';
 import Button from './../common/Button';
 
 import { Section, Article } from '../../styles/layout';
-import { ButtonContainer, FormContainer, Title2, InputField, Input, Label } from '../../styles/common.js';
+import { ButtonContainer, FormContainer, Title, InputField, Input, Label } from '../../styles/common.js';
 
 const SignUp = () => {
   const emailRef = useRef();
@@ -68,7 +68,7 @@ const SignUp = () => {
     <Layout title={'Signup'}>
       <Section>
         <Article>
-          <Title2>회원가입</Title2>
+          <Title>회원가입</Title>
 
           <FormContainer onSubmit={handleSubmit}>
             <InputField>
