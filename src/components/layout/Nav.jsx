@@ -7,7 +7,6 @@ import { ColorText } from '../../styles/common';
 const Nav = () => {
   const { user, signOut } = useAuth();
   let navigate = useNavigate();
-  // console.log(user);
 
   const handleSignout = async () => {
     await signOut();
@@ -48,6 +47,9 @@ const Nav = () => {
         ) : (
           <>
             <li>
+              <Link to="/addpost">글쓰기</Link>
+            </li>
+            <li>
               <Link to="/signin">로그인</Link>
             </li>
             <li>
@@ -59,4 +61,5 @@ const Nav = () => {
     </>
   );
 };
+
 export default Nav;

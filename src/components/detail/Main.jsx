@@ -67,7 +67,7 @@ export default function Main() {
               );
             })
           ) : (
-            <p>No blog posts available.</p>
+            <p>포스팅 글이 없습니다</p>
           )}
 
           <h2>전체 유저 목록</h2>
