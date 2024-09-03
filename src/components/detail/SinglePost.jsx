@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import './ex.css';
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
+
 import { Article, Section } from '../../styles/layout';
 import { supabase } from '../../assets/api/supabase';
 

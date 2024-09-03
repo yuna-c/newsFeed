@@ -7,13 +7,13 @@ const UnauthRoute = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      alert('여기는 로그인 하지 않으면 접속 불가');
+      alert('로그인 페이지로 들어갑니다');
     }
   }, [user]);
 
   if (user) {
-    // 로그인 하지 않은 사용자를 메인 페이지로 리다이렉트
-    return <Navigate to="/signin" replace />;
+    // 로그인된 사용자를 메인 페이지로 리다이렉트
+    return <Navigate to="/" replace />;
   }
 
   return children ? children : <Outlet />;

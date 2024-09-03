@@ -5,22 +5,26 @@ import { useNavigate } from 'react-router-dom';
 
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
+
 import { Section, Article } from '../../styles/layout';
 import {
   Title2,
   WriteFormContainer,
-  WirteInputField,
-  WirteLabel,
-  WirteInput,
-  WirteTextarea,
-  ButtonContainer,
-  WirteButtonContainer
+  WriteInputField,
+  WriteLabel,
+  WriteInput,
+  WriteTextarea,
+  WriteButtonContainer,
+  UserAvatarContainer,
+  UserAvatar,
+  UserAvatarTxt,
+  UserAvatarImg
 } from '../../styles/common';
 
 const AddPost = () => {
+  // 프로필 사진 불러오는 곳
   const { user } = useAuth();
-  // user정보
-  console.log(user.id, user.email, user.password);
+  console.log('유저 정보 =>', user);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -45,11 +49,9 @@ const AddPost = () => {
       const filePath = `${fileName}`; // 파일 경로 생성
 
       let { data, error: uploadError } = await supabase.storage.from('blogimage').upload(filePath, file);
-      // console.log(supabase.storage.from('image').getPublicUrl(url).data.publicUrl)
 
       if (uploadError) throw uploadError;
-      // 이미지 경로 저장
-      console.log(`data=>`, data);
+
       getURL(filePath);
     } catch (error) {
       alert(error.message);
@@ -65,7 +67,7 @@ const AddPost = () => {
       } = await supabase.storage.from('blogimage').getPublicUrl(url);
 
       if (error) throw error;
-      // 이미지 URL 설정
+
       setImage(publicUrl);
     } catch (error) {
       alert(error.message);
@@ -78,7 +80,6 @@ const AddPost = () => {
   const onHandleWrite = async (e) => {
     e.preventDefault();
 
-    // 이미지 업로드가 완료되지 않았을 경우 경고
     if (!image) {
       alert('이미지 업로드가 완료될 때까지 기다려주세요.');
       return;
@@ -93,7 +94,6 @@ const AddPost = () => {
         image: image // 이미지 경로 저장
       };
 
-      // let { error } = await supabase.from('post').insert(updates);
       let { error, data } = await supabase.from('post').insert(updates);
 
       if (error) {
@@ -103,7 +103,7 @@ const AddPost = () => {
       }
 
       if (error) throw error;
-      // 업로드 후 메인 페이지로 이동
+
       navigate('/');
     } catch (error) {
       alert(error.message);
@@ -117,46 +117,63 @@ const AddPost = () => {
           <Title2>글쓰기</Title2>
 
           <WriteFormContainer onSubmit={onHandleWrite}>
-            <WirteInputField>
-              <WirteLabel>제목</WirteLabel>
-              <WirteInput
+            {/* 사용자 프로필 정보 */}
+            <WriteInputField>
+              <WriteLabel>작성자</WriteLabel>
+              <UserAvatarContainer>
+                <UserAvatar>
+                  <UserAvatarImg
+                    src={user?.avatar_url || 'https://via.placeholder.com/150'}
+                    alt={user?.avatar_url || '유저 프로필'}
+                  />
+                </UserAvatar>
+                <UserAvatarTxt>
+                  {user?.username || '마이페이지에서 닉네임을 등록하세요!'}
+                  {/* {user?.email || '이메일이 없습니다.'} */}
+                </UserAvatarTxt>
+              </UserAvatarContainer>
+            </WriteInputField>
+
+            <WriteInputField>
+              <WriteLabel>제목</WriteLabel>
+              <WriteInput
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="title"
                 className="form-control"
               />
-            </WirteInputField>
+            </WriteInputField>
 
-            <WirteInputField>
-              <WirteLabel>해시 태그</WirteLabel>
-              <WirteInput
+            <WriteInputField>
+              <WriteLabel>해시 태그</WriteLabel>
+              <WriteInput
                 value={description}
                 placeholder="description"
                 onChange={(e) => setDescription(e.target.value)}
                 className="form-control"
               />
-            </WirteInputField>
+            </WriteInputField>
 
-            <WirteInputField>
-              <WirteLabel>컨텐츠</WirteLabel>
-              <WirteTextarea
+            <WriteInputField>
+              <WriteLabel>내용</WriteLabel>
+              <WriteTextarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="content"
                 className="form-control"
               />
-            </WirteInputField>
+            </WriteInputField>
 
-            <WirteInputField>
-              <WirteLabel></WirteLabel>
-              <WirteInput accept="image/*" onChange={uploadImage} type="file" className="form-control" />
-            </WirteInputField>
+            <WriteInputField>
+              <WriteLabel>이미지</WriteLabel>
+              <WriteInput accept="image/*" onChange={uploadImage} type="file" className="form-control" />
+            </WriteInputField>
 
-            <WirteButtonContainer>
+            <WriteButtonContainer>
               <Button disabled={uploading} className="btn btn-lg btn-secondary btn-block" $blue type="submit">
                 {uploading ? 'uploading...' : 'Add'}
               </Button>
-            </WirteButtonContainer>
+            </WriteButtonContainer>
           </WriteFormContainer>
         </Article>
       </Section>

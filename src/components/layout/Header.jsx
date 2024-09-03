@@ -1,5 +1,6 @@
-import { HeaderDiv } from '../../styles/layout';
 import Nav from './Nav';
+
+import { HeaderDiv } from '../../styles/layout';
 
 export default function Header() {
   return (
