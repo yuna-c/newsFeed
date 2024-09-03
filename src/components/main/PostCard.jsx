@@ -1,7 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PostCardContainer, PostCardProfile, PostContent, PostImg, LikeButton } from '../../styles/main';
+import { supabase } from '../../api/supabase';
 
 function PostCard() {
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await supabase.from('post').select('*');
+      fetchPosts();
+      console.log(response);
+    };
+  });
   return (
     <PostCardContainer>
       <PostCardProfile>

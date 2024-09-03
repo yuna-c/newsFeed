@@ -1,4 +1,4 @@
-import supabase from '../../api/supabase';
+import { supabase } from '../../api/supabase';
 
 import { useState } from 'react';
 import { Section, Article } from '../../styles/layout';
@@ -58,11 +58,8 @@ export default function Mypage() {
   return (
     <Layout title={'myPage'}>
       <Section>
-        <h2>Section</h2>
-        username: 강구1234 username: 강구1234 username: 강구1234 username: 강구1234 username: 강구1234 username:
-        강구1234
         <Article>
-          <h2>회원가입</h2>
+          <h2>마이 페이지</h2>
           <form onSubmit={onHandleSignUp}>
             <InputField>
               <label htmlFor="id" style={{ width: '80px', display: 'inline-block' }}>

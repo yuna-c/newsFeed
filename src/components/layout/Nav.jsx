@@ -1,21 +1,26 @@
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { NavDiv } from '../../styles/layout';
+import { LogoDiv, NavDiv } from '../../styles/layout';
 
 const Nav = () => {
   const { user, signOut } = useAuth();
   let navigate = useNavigate();
+  // console.log(user);
 
   const handleSignout = async () => {
     await signOut();
     navigate('/');
+    window.location.reload();
   };
 
   return (
-    <nav className="Nav">
-      <ul>
+    <>
+      <LogoDiv>
+        <Link to="/">홈 로고</Link>
+      </LogoDiv>
+      <NavDiv className="Nav">
         <li>
-          <Link to="/">홈</Link>
+          <Link to="/">전체 글</Link>
         </li>
         {user ? (
           <>
@@ -26,7 +31,14 @@ const Nav = () => {
               <Link to="/drop">회원탈퇴</Link>
             </li>
             <li>
-              <Link to="/write">글쓰기</Link>
+              {/* <Link to="/write">글쓰기</Link> */}
+              <Link to="/addpost">글쓰기</Link>
+            </li>
+            <li>
+              <Link to="/post">작성 글</Link>
+            </li>
+            <li>
+              <Link to="/detail">detail</Link>
             </li>
             <li>
               <Link to="/" onClick={handleSignout}>
@@ -34,7 +46,7 @@ const Nav = () => {
               </Link>
             </li>
             <li>
-              <span>유저 이메일: {user.email}</span>
+              <span>{user.email}님 환영합니다</span>
             </li>
           </>
         ) : (
@@ -47,8 +59,8 @@ const Nav = () => {
             </li>
           </>
         )}
-      </ul>
-    </nav>
+      </NavDiv>
+    </>
   );
 };
 export default Nav;
