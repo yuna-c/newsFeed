@@ -124,12 +124,11 @@ const AddPost = () => {
                 <UserAvatar>
                   <UserAvatarImg
                     src={user?.avatar_url || 'https://via.placeholder.com/150'}
-                    alt={user?.avatar_url || '유저 프로필'}
+                    alt={user?.username || '유저 프로필'}
                   />
                 </UserAvatar>
                 <UserAvatarTxt>
-                  {user?.username || '마이페이지에서 닉네임을 등록하세요!'}
-                  {/* {user?.email || '이메일이 없습니다.'} */}
+                  {user?.username || user?.email || '마이페이지에서 닉네임을 등록하세요!'}
                 </UserAvatarTxt>
               </UserAvatarContainer>
             </WriteInputField>
