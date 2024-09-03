@@ -39,7 +39,7 @@ const Post = () => {
       ) : (
         <ul>
           {posts.map((post) => (
-            <li key={post.uuid}>
+            <li key={post.id}>
               <h2>{post.title}</h2>
               <p>{post.description}</p>
               <p>{post.content}</p>

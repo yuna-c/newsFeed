@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../assets/api/supabase';
+import { Link } from 'react-router-dom';
+
+import Layout from '../layout/Layout';
 
 import { Section, Article } from '../../styles/layout';
-import { Link } from 'react-router-dom';
-import Layout from '../layout/Layout';
 
 export default function Main() {
   const [data, setData] = useState();

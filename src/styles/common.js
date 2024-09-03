@@ -1,10 +1,12 @@
 // common styled
 import styled from 'styled-components';
 
+// 타이틀
 export const Title2 = styled.h2`
   font-size: 1.8rem;
 `;
 
+// 폼
 export const FormContainer = styled.form`
   width: 100%;
   min-height: 70vh;
@@ -40,55 +42,9 @@ export const Label = styled.label`
   display: inline-block;
 `;
 
+// 버튼
 export const ButtonContainer = styled.div`
   display: flex;
-
-  & > * {
-    margin-top: 30px !important;
-    display: inline-block;
-    font-size: 1rem;
-  }
-`;
-
-export const WriteFormContainer = styled.form`
-  ${FormContainer}
-  margin-top: 0 !important;
-`;
-
-export const WirteInputField = styled.div`
-  width: 100%;
-  padding: 0 20px 20px;
-  display: flex;
-`;
-
-export const WirteInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-
-  &:read-only {
-    background-color: #dddddd57;
-    color: #aeaaaa;
-    border-bottom: 1px solid #000;
-    cursor: not-allowed;
-  }
-`;
-
-export const WirteLabel = styled.label`
-  width: 100px;
-  padding-top: 10px;
-`;
-
-export const WirteTextarea = styled.textarea`
-  width: 100%;
-  height: 360px;
-  padding: 10px;
-  border: 1px solid #ddd;
-`;
-
-export const WirteButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
 
   & > * {
     margin-top: 30px !important;
@@ -120,7 +76,56 @@ export const Buttons = styled.button`
     opacity: 1;
   }
 `;
+// 글쓰기 페이지 폼
+export const WriteFormContainer = styled.form`
+  ${FormContainer}
+  margin-top: 0 !important;
+`;
 
+export const WriteInputField = styled.div`
+  width: 100%;
+  padding: 0 20px 20px;
+  display: flex;
+`;
+
+export const WriteInput = styled.input`
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+
+  &:read-only {
+    background-color: #dddddd57;
+    color: #aeaaaa;
+    border-bottom: 1px solid #000;
+    cursor: not-allowed;
+  }
+`;
+
+export const WriteLabel = styled.label`
+  width: 100px;
+  padding-top: 10px;
+`;
+
+export const WriteTextarea = styled.textarea`
+  width: 100%;
+  height: 360px;
+  padding: 10px;
+  border: 1px solid #ddd;
+`;
+
+// 글쓰기 페이지 버튼
+export const WriteButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  & > * {
+    margin-top: 30px !important;
+    display: inline-block;
+    font-size: 1rem;
+  }
+`;
+
+// 컬러 텍스트 inline
 export const ColorText = styled.span`
   color: ${(props) => {
     if (props.$yellow) return '#f5b236'; // 노랑 배경
@@ -136,6 +141,7 @@ export const ColorText = styled.span`
   }
 `;
 
+// 프로필 이미지
 export const ImageContainer = styled.div`
   position: fixed;
   bottom: 0;
@@ -200,4 +206,29 @@ export const ProfileImage = styled.img`
   object-fit: cover;
   border-radius: 50%;
   border: 2px solid #ddd;
+`;
+
+// 포스트 업로드/ 글 볼때 프로필 이미지
+export const UserAvatarContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+`;
+export const UserAvatar = styled.span`
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+`;
+
+export const UserAvatarImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+`;
+export const UserAvatarTxt = styled.span`
+  font-size: 1.2rem;
 `;

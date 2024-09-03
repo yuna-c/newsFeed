@@ -7,13 +7,13 @@ const AuthRoute = ({ children }) => {
 
   useEffect(() => {
     if (!user) {
-      alert('여기는 로그인 되어 있으면 접속 불가');
+      alert('로그인이 필요합니다.');
     }
   }, [user]);
 
   if (!user) {
-    // 로그인된 사용자를 로그인 페이지로 리다이렉트
-    return <Navigate to="/" replace />;
+    // 로그인하지 않은 사용자를 로그인 페이지로 리다이렉트
+    return <Navigate to="/signin" replace />;
   }
 
   return children ? children : <Outlet />;
