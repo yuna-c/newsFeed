@@ -1,9 +1,10 @@
-import { supabase } from '../../api/supabase';
 import { useState, useEffect } from 'react';
+import { supabase } from '../../assets/api/supabase';
+import { Link } from 'react-router-dom';
+
+import Layout from '../layout/Layout';
 
 import { Section, Article } from '../../styles/layout';
-import { Link } from 'react-router-dom';
-import Layout from '../layout/Layout';
 
 export default function Main() {
   const [data, setData] = useState();
@@ -36,7 +37,6 @@ export default function Main() {
             data.map((post) => {
               return (
                 <div key={post.id}>
-                  {/* <!-- Post preview--> */}
                   <div className="post-preview">
                     <Link to={`/singlepost/${post.id}`}>
                       <h2 className="post-title">{post.title}</h2>

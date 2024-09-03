@@ -1,15 +1,31 @@
-import { useRef, useState } from 'react';
-import { supabase } from '../../api/supabase';
-import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
+import { supabase } from '../../assets/api/supabase';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Editor } from '@toast-ui/react-editor';
 
-import { Section, Article } from '../../styles/layout';
 import Layout from '../layout/Layout';
 import Button from '../common/Button';
 
+import { Section, Article } from '../../styles/layout';
+import {
+  Title2,
+  WriteFormContainer,
+  WriteInputField,
+  WriteLabel,
+  WriteInput,
+  WriteTextarea,
+  WriteButtonContainer,
+  UserAvatarContainer,
+  UserAvatar,
+  UserAvatarTxt,
+  UserAvatarImg
+} from '../../styles/common';
+
 const AddPost = () => {
-  const editorRef = useRef(null);
+  // 프로필 사진 불러오는 곳
+  const { user } = useAuth();
+  console.log('유저 정보 =>', user);
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
@@ -33,12 +49,9 @@ const AddPost = () => {
       const filePath = `${fileName}`; // 파일 경로 생성
 
       let { data, error: uploadError } = await supabase.storage.from('blogimage').upload(filePath, file);
-      // console.log(supabase.storage.from('image').getPublicUrl(url).data.publicUrl)
-      console.log(data);
 
       if (uploadError) throw uploadError;
 
-      console.log(data); // 이미지 경로 저장
       getURL(filePath);
     } catch (error) {
       alert(error.message);
@@ -55,7 +68,7 @@ const AddPost = () => {
 
       if (error) throw error;
 
-      setImage(publicUrl); // 이미지 URL 설정
+      setImage(publicUrl);
     } catch (error) {
       alert(error.message);
     } finally {
@@ -64,10 +77,9 @@ const AddPost = () => {
   };
 
   // 1. 블로그 글 올리기
-  const addBlog = async (e) => {
+  const onHandleWrite = async (e) => {
     e.preventDefault();
 
-    // 이미지 업로드가 완료되지 않았을 경우 경고
     if (!image) {
       alert('이미지 업로드가 완료될 때까지 기다려주세요.');
       return;
@@ -75,27 +87,26 @@ const AddPost = () => {
 
     try {
       const updates = {
-        id: uuidv4(),
+        user_id: user.id,
         title: title,
         description: description,
         content: content,
         image: image // 이미지 경로 저장
       };
 
-      let { error } = await supabase.from('post').insert(updates);
+      let { error, data } = await supabase.from('post').insert(updates);
+
+      if (error) {
+        console.error('Error inserting post:', error);
+      } else {
+        console.log('Post inserted successfully:', data);
+      }
 
       if (error) throw error;
 
-      navigate('/'); // 업로드 후 메인 페이지로 이동
+      navigate('/');
     } catch (error) {
       alert(error.message);
-    }
-  };
-
-  // 에디터 내용 변경 시 호출
-  const handleEditorChange = () => {
-    if (editorRef.current) {
-      setContent(editorRef.current.getInstance().getMarkdown());
     }
   };
 
@@ -103,66 +114,67 @@ const AddPost = () => {
     <Layout title={'AddPost'}>
       <Section>
         <Article>
-          <h2>글쓰기 </h2>
+          <Title2>글쓰기</Title2>
 
-          <br />
+          <WriteFormContainer onSubmit={onHandleWrite}>
+            {/* 사용자 프로필 정보 */}
+            <WriteInputField>
+              <WriteLabel>작성자</WriteLabel>
+              <UserAvatarContainer>
+                <UserAvatar>
+                  <UserAvatarImg
+                    src={user?.avatar_url || 'https://via.placeholder.com/150'}
+                    alt={user?.avatar_url || '유저 프로필'}
+                  />
+                </UserAvatar>
+                <UserAvatarTxt>
+                  {user?.username || '마이페이지에서 닉네임을 등록하세요!'}
+                  {/* {user?.email || '이메일이 없습니다.'} */}
+                </UserAvatarTxt>
+              </UserAvatarContainer>
+            </WriteInputField>
 
-          <form onSubmit={addBlog}>
-            <div>
-              <label>제목</label>
-              <input
+            <WriteInputField>
+              <WriteLabel>제목</WriteLabel>
+              <WriteInput
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="title"
                 className="form-control"
               />
-            </div>
+            </WriteInputField>
 
-            <div>
-              <label>해시 태그</label>
-              <input
+            <WriteInputField>
+              <WriteLabel>해시 태그</WriteLabel>
+              <WriteInput
                 value={description}
                 placeholder="description"
                 onChange={(e) => setDescription(e.target.value)}
                 className="form-control"
               />
-            </div>
+            </WriteInputField>
 
-            <div>
-              <label className="form-label px-0">컨텐츠</label>
-              <textarea
+            <WriteInputField>
+              <WriteLabel>내용</WriteLabel>
+              <WriteTextarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="content"
                 className="form-control"
               />
-            </div>
+            </WriteInputField>
 
-            <div>
-              <label>Post content</label>
-              <Editor
-                ref={editorRef}
-                initialEditType="markdown"
-                previewStyle="vertical"
-                height="400px"
-                initialValue="Hello, TOAST UI Editor!"
-                onChange={handleEditorChange}
-              />
-            </div>
+            <WriteInputField>
+              <WriteLabel>이미지</WriteLabel>
+              <WriteInput accept="image/*" onChange={uploadImage} type="file" className="form-control" />
+            </WriteInputField>
 
-            <div>
-              {/* <label>이미지</label> */}
-              <input accept="image/*" onChange={uploadImage} type="file" className="form-control" />
-            </div>
-            <Button
-              // onClick={() => addBlog({ title, description, content, image })}
-              disabled={uploading}
-              className="btn btn-lg btn-secondary btn-block"
-              type="submit"
-            >
-              {uploading ? 'uploading...' : 'Add'}
-            </Button>
-          </form>
+            <WriteButtonContainer>
+              <Button disabled={uploading} className="btn btn-lg btn-secondary btn-block" $blue type="submit">
+                {uploading ? 'uploading...' : 'Add'}
+              </Button>
+            </WriteButtonContainer>
+          </WriteFormContainer>
         </Article>
       </Section>
     </Layout>

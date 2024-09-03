@@ -12,31 +12,6 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getUserProfile = async (sessionUser) => {
-      try {
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('email, avatar_url, username')
-          .eq('email', sessionUser.email)
-          .single();
-
-        if (profileError || !profile) {
-          console.error('프로필 가져오기 오류 또는 프로필이 존재하지 않음:', profileError);
-          setUser(null);
-        } else {
-          setUser({
-            ...sessionUser,
-            email: profile.email,
-            avatar_url: profile.avatar_url,
-            username: profile.username
-          });
-        }
-      } catch (error) {
-        console.error('프로필 가져오는 중 오류 발생:', error);
-        setUser(null);
-      }
-    };
-
     const getUserSession = async () => {
       const {
         data: { session },
@@ -45,15 +20,17 @@ export function AuthProvider({ children }) {
 
       if (error) {
         console.error('세션 가져오기 오류:', error);
-        setLoading(false);
-        return;
+      } else {
+        setUser(session?.user ?? null);
+        // 전역상태 이때 유저가 가진 프로필 이미지를 가지고 올 수 있어야한다
+        // 여기에 수퍼베이스 테이블 프로필 이미지랑 닉네임이랑 같이 셋을 할 수 있어야한다
+        // user 객체에 있어야 한다
       }
 
-      if (session?.user) {
-        await getUserProfile(session.user);
-      } else {
-        setUser(null);
-      }
+      // const currentUser = supabase.auth.user;
+      // if (!session && currentUser) {
+      //   setUser(currentUser);
+      // }
 
       setLoading(false);
     };
@@ -61,12 +38,13 @@ export function AuthProvider({ children }) {
     getUserSession();
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        getUserProfile(session.user);
-      } else {
-        setUser(null);
-        setLoading(false);
-      }
+      // console.log('인증상태 변경됨:', event, session)
+      setUser(session?.user ?? null);
+      // if (session) {
+      //   console.log(session.user.email);
+      //   console.log(session);
+      // }
+      setLoading(false);
     });
 
     return () => {

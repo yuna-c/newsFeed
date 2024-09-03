@@ -1,38 +1,27 @@
 import { useAuth } from '../../context/AuthContext';
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+
+import Layout from '../layout/Layout';
+import Button from './../common/Button';
 
 import { Section, Article } from '../../styles/layout';
-import Layout from '../layout/Layout';
-
-const InputField = styled.div`
-  padding: 10px;
-  display: flex;
-  align-items: flex-end;
-`;
-
-const Input = styled.input`
-  padding: 5px;
-  border-bottom: 1px solid #000;
-`;
+import { ButtonContainer, FormContainer, Title2, InputField, Input, Label } from '../../styles/common.js';
 
 const SignUp = () => {
-  // const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
-  const confirmPasswordRef = useRef(); // 비밀번호 확인 필드용 useRef
+  const confirmPasswordRef = useRef();
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
-
   const { signUp, signOut } = useAuth();
+
   let navigate = useNavigate();
 
   useEffect(() => {
     if (message) {
-      console.log('Alert message:', message); // message 상태가 업데이트되는지 확인
       alert(message);
-      setMessage(''); // alert 후 message를 초기화하여 재사용 가능
+      setMessage('');
     }
   }, [message]);
 
@@ -63,38 +52,40 @@ const SignUp = () => {
 
     if (error) {
       setError(error);
-      setMessage('이메일 또는 비밀번호가 틀렸습니다. 다시 확인해 주세요');
+      setMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
       return;
     }
 
-    await signOut(); // 회원가입 후 바로 로그아웃 처리합니다.
+    // 인풋값들 콘솔로 출력
+    // console.log('이메일:', email);
+    // console.log('비밀번호:', password);
+    // console.log('비밀번호 확인:', confirmPassword);
 
-    navigate('/signin'); // 로그인 페이지로 이동합니다.
+    // 콘솔에 프로필 데이터 출력
+    // console.log('회원가입 성공, 프로필 정보:', data);
+
+    // 회원가입 후 로그아웃 처리 및 로그인 페이지로 이동
+    await signOut();
+    navigate('/signin');
   };
 
   return (
     <Layout title={'Signup'}>
       <Section>
-        <h2>회원가입</h2>
         <Article>
-          <form onSubmit={handleSubmit}>
-            <h1>Please sign up</h1>
+          <Title2>회원가입</Title2>
+
+          <FormContainer onSubmit={handleSubmit}>
             <InputField>
-              <label htmlFor="inputEmail" style={{ width: '100px', display: 'inline-block' }}>
-                이메일
-              </label>
+              <Label htmlFor="inputEmail">이메일</Label>
               <Input ref={emailRef} type="email" id="inputEmail" placeholder="Email address" required />
             </InputField>
             <InputField>
-              <label htmlFor="inputPassword" style={{ width: '100px', display: 'inline-block' }}>
-                비밀번호
-              </label>
+              <Label htmlFor="inputPassword">비밀번호</Label>
               <Input ref={passwordRef} type="password" id="inputPassword" placeholder="Password" required />
             </InputField>
             <InputField>
-              <label htmlFor="inputConfirmPassword" style={{ width: '100px', display: 'inline-block' }}>
-                비밀번호 확인
-              </label>
+              <Label htmlFor="inputConfirmPassword">비밀번호 확인</Label>
               <Input
                 ref={confirmPasswordRef}
                 type="password"
@@ -103,17 +94,17 @@ const SignUp = () => {
                 required
               />
             </InputField>
-            {/*
-            <InputField>
-              <label htmlFor="inputName" style={{ width: '100px', display: 'inline-block' }}>
-                이름
-              </label>
-              <Input ref={nameRef} type="text" id="inputName" placeholder="name" required />
-            </InputField> 
-            */}
-            <button type="submit">회원가입</button>
-            <Link to="/signin">로그인</Link>
-          </form>
+
+            <ButtonContainer>
+              <Button type="submit" $blue>
+                회원가입
+              </Button>
+
+              <Button>
+                <Link to="/signin">로그인</Link>
+              </Button>
+            </ButtonContainer>
+          </FormContainer>
         </Article>
       </Section>
     </Layout>
