@@ -1,11 +1,11 @@
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext.jsx';
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import Layout from '../layout/Layout';
-import Button from './../common/Button';
+import Layout from '../layout/Layout.jsx';
+import Button from '../common/Button.jsx';
 
-import { Section, Article } from '../../styles/layout';
+import { Section, Article } from '../../styles/layout.js';
 import { ButtonContainer, FormContainer, Title, InputField, Input, Label } from '../../styles/common.js';
 
 export default function SignIn() {
