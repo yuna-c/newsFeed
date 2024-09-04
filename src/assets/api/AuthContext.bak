@@ -1,0 +1,90 @@
+import { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../assets/api/supabase';
+
+const AuthContext = createContext();
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
+
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getUserSession = async () => {
+      const {
+        data: { session },
+        error
+      } = await supabase.auth.getSession();
+
+      if (error) {
+        console.error('세션 가져오기 오류:', error);
+      } else {
+        setUser(session?.user ?? null);
+        // 전역상태 이때 유저가 가진 프로필 이미지를 가지고 올 수 있어야한다
+        // 여기에 수퍼베이스 테이블 프로필 이미지랑 닉네임이랑 같이 셋을 할 수 있어야한다
+        // user 객체에 있어야 한다
+      }
+
+      // const currentUser = supabase.auth.user;
+      // if (!session && currentUser) {
+      //   setUser(currentUser);
+      // }
+
+      setLoading(false);
+    };
+
+    getUserSession();
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      // console.log('인증상태 변경됨:', event, session)
+      setUser(session?.user ?? null);
+      // if (session) {
+      //   console.log(session.user.email);
+      //   console.log(session);
+      // }
+      setLoading(false);
+    });
+
+    return () => {
+      listener?.unsubscribe?.();
+    };
+  }, []);
+
+  const value = {
+    signUp: async (data) => {
+      const { user, error } = await supabase.auth.signUp(data);
+
+      if (error) {
+        console.error('회원가입 오류:', error);
+        return { error };
+      }
+
+      return { user };
+    },
+    signIn: async (data) => {
+      const { error } = await supabase.auth.signInWithPassword(data);
+
+      if (error) {
+        console.error('로그인 오류:', error);
+        return { error };
+      }
+
+      alert('로그인 완료');
+    },
+    signOut: async () => {
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error('로그아웃 오류:', error);
+      } else {
+        setUser(null);
+      }
+    },
+
+    user
+  };
+
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
+}
