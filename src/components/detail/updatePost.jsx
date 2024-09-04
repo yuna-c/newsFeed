@@ -3,6 +3,14 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../assets/api/supabase';
 import Button from '../common/Button';
 import Layout from '../layout/Layout';
+import {
+  WriteFormContainer,
+  WriteInputField,
+  WriteLabel,
+  WriteInput,
+  WriteTextarea,
+  WriteButtonContainer
+} from '../../styles/common';
 
 const UpdatePost = () => {
   const { id } = useParams(); // URL에서 게시글 ID 가져오기
@@ -42,24 +50,26 @@ const UpdatePost = () => {
 
   return (
     <Layout title="게시글 수정">
-      <div className="update-post-container">
-        <h2>게시글 수정</h2>
-        <form onSubmit={handleUpdate}>
-          <label>
-            제목:
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-          </label>
-          <label>
-            설명:
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
-          </label>
-          <label>
-            이미지 URL:
-            <input type="text" value={image} onChange={(e) => setImage(e.target.value)} />
-          </label>
+      <WriteFormContainer onSubmit={handleUpdate}>
+        <WriteInputField>
+          <WriteLabel>제목:</WriteLabel>
+          <WriteInput type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        </WriteInputField>
+
+        <WriteInputField>
+          <WriteLabel>설명:</WriteLabel>
+          <WriteTextarea value={description} onChange={(e) => setDescription(e.target.value)} required />
+        </WriteInputField>
+
+        <WriteInputField>
+          <WriteLabel>이미지 URL:</WriteLabel>
+          <WriteInput type="text" value={image} onChange={(e) => setImage(e.target.value)} />
+        </WriteInputField>
+
+        <WriteButtonContainer>
           <Button type="submit">게시글 수정</Button>
-        </form>
-      </div>
+        </WriteButtonContainer>
+      </WriteFormContainer>
     </Layout>
   );
 };

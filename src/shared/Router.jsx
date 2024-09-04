@@ -7,7 +7,7 @@ import SignIn from '../components/auth/SignIn';
 import SignUp from '../components/auth/SignUp';
 import MyPage from '../components/mypage/Mypage';
 import Detail from '../components/detail/Detail';
-import Write from '../components/WritePage/Write';
+// import Write from '../components/WritePage/Write';
 import AddPost from '../components/post/AddPost';
 import SinglePost from '../components/detail/SinglePost';
 import UpdatePost from '../components/detail/updatePost';
@@ -29,7 +29,7 @@ export default function Router() {
           <Route element={<AuthRoute />}>
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/detail" element={<Detail />} />
-            <Route path="/write" element={<Write />} />
+            {/* <Route path="/write" element={<Write />} /> */}
             <Route path="/addpost" element={<AddPost />} />
             <Route path="/singlepost/:id" element={<SinglePost />} />
             <Route path="/updatePost/:id" element={<UpdatePost />} />
