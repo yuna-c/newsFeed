@@ -6,7 +6,7 @@ import Layout from '../layout/Layout';
 import Button from '../common/Button';
 import { Section, Article } from '../../styles/layout';
 import {
-  Title2,
+  Title,
   WriteFormContainer,
   WriteInputField,
   WriteLabel,
@@ -19,7 +19,7 @@ import {
   UserAvatarImg
 } from '../../styles/common';
 
-const AddPost = () => {
+export default function Post() {
   const { user } = useAuth();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -82,7 +82,10 @@ const AddPost = () => {
 
   const getURL = async (url) => {
     try {
-      const { data: { publicUrl }, error } = await supabase.storage.from('blogimage').getPublicUrl(url);
+      const {
+        data: { publicUrl },
+        error
+      } = await supabase.storage.from('blogimage').getPublicUrl(url);
 
       if (error) throw error;
       setImage(publicUrl);
@@ -118,7 +121,7 @@ const AddPost = () => {
         console.error('Error inserting post:', error);
         throw error;
       }
-      
+
       navigate('/');
     } catch (error) {
       alert(error.message);
@@ -126,10 +129,10 @@ const AddPost = () => {
   };
 
   return (
-    <Layout title={'AddPost'}>
+    <Layout title={'Post'}>
       <Section>
         <Article>
-          <Title2>글쓰기</Title2>
+          <Title>글쓰기</Title>
 
           <WriteFormContainer onSubmit={addBlog}>
             <WriteInputField>
@@ -141,9 +144,7 @@ const AddPost = () => {
                     alt={username || '유저 프로필'}
                   />
                 </UserAvatar>
-                <UserAvatarTxt>
-                  {username || user?.email || '마이페이지에서 닉네임을 등록하세요!'}
-                </UserAvatarTxt>
+                <UserAvatarTxt>{username || user?.email || '마이페이지에서 닉네임을 등록하세요!'}</UserAvatarTxt>
               </UserAvatarContainer>
             </WriteInputField>
 
@@ -192,6 +193,4 @@ const AddPost = () => {
       </Section>
     </Layout>
   );
-};
-
-export default AddPost;
+}

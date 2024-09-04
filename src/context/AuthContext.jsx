@@ -12,49 +12,40 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // profiles : 이메일/프로필/닉네임 가져오기
     const getUserProfile = async (sessionUser) => {
-      try {
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('email, avatar_url, username')
-          .eq('email', sessionUser.email)
-          .single();
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('email, avatar_url, username')
+        .eq('email', sessionUser.email)
+        .single();
 
-        if (profileError || !profile) {
-          console.error('프로필 가져오기 오류 또는 프로필이 존재하지 않음:', profileError);
-          setUser(null);
-        } else {
-          setUser({
-            ...sessionUser,
-            email: profile.email,
-            avatar_url: profile.avatar_url,
-            username: profile.username
-          });
-        }
-      } catch (error) {
-        console.error('프로필 가져오는 중 오류 발생:', error);
+      if (error || !profile) {
+        console.error('프로필 가져오기 오류 또는 프로필이 존재하지 않음:', error);
         setUser(null);
+      } else {
+        setUser({
+          ...sessionUser,
+          email: profile.email,
+          avatar_url: profile.avatar_url,
+          username: profile.username
+        });
       }
     };
 
+    // session : 로그인/로그아웃 세션 가져오기
     const getUserSession = async () => {
       const {
         data: { session },
         error
       } = await supabase.auth.getSession();
 
-      if (error) {
-        console.error('세션 가져오기 오류:', error);
-        setLoading(false);
-        return;
-      }
-
-      if (session?.user) {
-        await getUserProfile(session.user);
-      } else {
+      if (error || !session) {
+        console.error('세션 가져오기 오류 또는 세션이 없습니다:', error);
         setUser(null);
+      } else if (session.user) {
+        await getUserProfile(session.user);
       }
-
       setLoading(false);
     };
 
@@ -85,6 +76,7 @@ export function AuthProvider({ children }) {
 
       return { user };
     },
+
     signIn: async (data) => {
       const { error } = await supabase.auth.signInWithPassword(data);
 
@@ -92,9 +84,8 @@ export function AuthProvider({ children }) {
         console.error('로그인 오류:', error);
         return { error };
       }
-
-      alert('로그인 완료');
     },
+
     signOut: async () => {
       const { error } = await supabase.auth.signOut();
 
@@ -102,6 +93,7 @@ export function AuthProvider({ children }) {
         console.error('로그아웃 오류:', error);
       } else {
         setUser(null);
+        console.log('로그아웃');
       }
     },
 

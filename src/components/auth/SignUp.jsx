@@ -1,4 +1,5 @@
 import { useAuth } from '../../context/AuthContext';
+import { supabase } from '../../assets/api/supabase.js';
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -6,9 +7,9 @@ import Layout from '../layout/Layout';
 import Button from './../common/Button';
 
 import { Section, Article } from '../../styles/layout';
-import { ButtonContainer, FormContainer, Title2, InputField, Input, Label } from '../../styles/common.js';
+import { ButtonContainer, FormContainer, Title, InputField, Input, Label } from '../../styles/common.js';
 
-const SignUp = () => {
+export default function SignUp() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
@@ -56,16 +57,10 @@ const SignUp = () => {
       return;
     }
 
-    // 인풋값들 콘솔로 출력
-    // console.log('이메일:', email);
-    // console.log('비밀번호:', password);
-    // console.log('비밀번호 확인:', confirmPassword);
-
-    // 콘솔에 프로필 데이터 출력
-    // console.log('회원가입 성공, 프로필 정보:', data);
-
-    // 회원가입 후 로그아웃 처리 및 로그인 페이지로 이동
+    // 회원가입 후 로그아웃은 되나 로그아웃 alert이 뜨고 메인페이지로 이동
     await signOut();
+    await supabase.auth.signOut();
+
     navigate('/signin');
   };
 
@@ -73,7 +68,7 @@ const SignUp = () => {
     <Layout title={'Signup'}>
       <Section>
         <Article>
-          <Title2>회원가입</Title2>
+          <Title>회원가입</Title>
 
           <FormContainer onSubmit={handleSubmit}>
             <InputField>
@@ -109,6 +104,4 @@ const SignUp = () => {
       </Section>
     </Layout>
   );
-};
-
-export default SignUp;
+}

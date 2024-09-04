@@ -1,0 +1,47 @@
+import { useEffect, useState } from 'react';
+import { supabase } from './supabase';
+const getCommitsWithProfiles = async () => {
+  try {
+    let { data, error, status } = await supabase
+      .from('commit')
+      .select(
+        `
+        *,
+        profiles (
+          username,
+          avatar_url
+        )
+      `
+      )
+      .eq('commit.user_id', 'profiles.user_id'); // 조인 조건
+    if (error && status !== 406) {
+      console.log('error', error);
+      throw error;
+    }
+    return data; // 연결된 데이터를 반환
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export default function CommitList() {
+  const [commits, setCommits] = useState([]);
+  useEffect(() => {
+    const fetchCommits = async () => {
+      const data = await getCommitsWithProfiles();
+      setCommits(data);
+    };
+    fetchCommits();
+  }, []);
+  return (
+    <div>
+      <h1>Commit List</h1>
+      {commits.map((commit) => (
+        <div key={commit.id}>
+          <p>Commit Message: {commit.message}</p>
+          <p>Username: {commit.profiles.username}</p>
+          <img src={commit.profiles.avatar_url} alt="User Avatar" />
+        </div>
+      ))}
+    </div>
+  );
+}
