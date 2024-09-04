@@ -21,6 +21,7 @@ export default function Router() {
         <Header />
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/detail/:id" element={<Detail />} />
           <Route element={<UnauthRoute />}>
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
@@ -28,8 +29,6 @@ export default function Router() {
           <Route element={<AuthRoute />}>
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypost" element={<MyPost />} />
-            <Route path="/detail/:id" element={<Detail />} />
-
             <Route path="/post" element={<Post />} />
             <Route path="/updatepost/:id" element={<UpdatePost />} />
           </Route>

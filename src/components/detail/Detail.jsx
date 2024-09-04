@@ -273,7 +273,7 @@ export default function Detail() {
                             <ColorText $red>작성자: {comment.username}</ColorText>
                             <PostTimeText>{new Date(comment.created_at).toLocaleString()}</PostTimeText>
                           </PostCommentText>
-                          {comment.user_id === user.id && (
+                          {user && comment.user_id === user.id && (
                             <PostCommentButtonContainer>
                               <Button onClick={() => setEditingCommentId(comment.id)} $blue>
                                 수정
